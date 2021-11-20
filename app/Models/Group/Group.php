@@ -44,7 +44,7 @@ class Group extends Model
      * 
      */
     public function getPermissionsAttribute(){
-        $permission_config=config("group_system.types.".$this->getTypeName().".permission");
+        $permission_config=config("group_system.group_types.".$this->getTypeName().".permission");
         //
         $permissions=[];
         $permissions[]='group.*';
@@ -88,7 +88,11 @@ class Group extends Model
     /**
      * 
      */
-    public static function setUp(int $user_id,string $name,GroupType $type,string $admin_password){
+    public static function setUp($user,string $name,GroupType $type,string $admin_password){
+        //
+        if(is_int($user)){
+            $user=User::find($user);
+        }
         //
         $group=$type->groups()->create([
             'name'=>$name,
@@ -98,13 +102,13 @@ class Group extends Model
             $group->createInfoBase($template);
         }
         //
-        $admin_config=config('group_system.types.'.$type->name.'.admin');
+        $admin_config=config('group_system.group_types.'.$type->name.'.admin');
         //
         $admin=$group->createRole($admin_config['name'],$admin_password);
         //
         $admin->syncPermissions($group->permissions);
         //
-        $group->inviteUser($user_id,$admin->id);
+        $group->inviteUser($user,$admin->id);
         return $group;
     }
     

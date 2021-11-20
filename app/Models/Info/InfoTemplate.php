@@ -50,6 +50,15 @@ class InfoTemplate extends Model
     }
 
     //
+    public function getConfig(string $path=null){
+        if(is_null($path)){
+            return config("group_system.info_templates.".$this->package_name.".".$this->template_name);
+        }else{
+            return config("group_system.info_templates.".$this->package_name.".".$this->template_name.".".$path);
+        }
+    }
+
+    //
     public function getPackageNameAttribute(){
         $name=explode('/', $this->name);
         return $name[0];

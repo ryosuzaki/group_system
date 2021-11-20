@@ -16,7 +16,7 @@ class GroupTableSeeder extends Seeder
      */
     public function run()
     {
-        foreach(config("group_system.types") as $type=>$body){
+        foreach(config("group_system.group_types") as $type=>$body){
             GroupType::create([
                 'name'=>$type,
             ]);

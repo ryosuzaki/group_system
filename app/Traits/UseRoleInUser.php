@@ -38,7 +38,7 @@ trait UseRoleInUser
     //
     public function joinModelRole($model_type,int $model_id,$role,string $password){
         $model=$model_type::find($model_id);
-        if($model->getRole($role)->checkPassword($password)){
+        if($model->checkRolePassword($role,$password)){
             return $model->inviteUser($this->id,$role);
         }
     }

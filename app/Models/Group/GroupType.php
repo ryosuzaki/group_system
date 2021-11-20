@@ -30,15 +30,19 @@ class GroupType extends Model
     
 
     //
+    public function getConfig(){
+        return config("group_system.group_types.".$this->name."");
+    }
+    //
     public function getName(){
-        return config("group_system.types.".$this->name.".name");
+        return config("group_system.group_types.".$this->name.".name");
     }
     //
     public function getInitialInfoAttribute(){
-        return config("group_system.types.".$this->name.".initial_info");
+        return config("group_system.group_types.".$this->name.".initial_info");
     }
     //
     public function getAvailableUserInfoAttribute(){
-        return config("group_system.types.".$this->name.".available_user_info");
+        return config("group_system.group_types.".$this->name.".available_user_info");
     }
 }

@@ -22,7 +22,7 @@ class UserGroupController extends Controller
         return view('user.group.index')->with([
             'user'=>$user,
             'groups'=>$user->groups()->get(),
-            'extras'=>$user->extraGroups()->get(),
+            //'extras'=>$user->extraGroups()->get(),
             'requests'=>$user->groupsRequestJoin()->get(),
             ]);
     }
@@ -67,10 +67,10 @@ class UserGroupController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         //
-        if(!$group->getRole((int)$request->role_id)->checkPassword($request->password)){
+        if(!$group->checkRolePassword((int)$request->role_id,$request->password)){
             return back()->withInput();
         }
-        $group->inviteUser(Auth::id(),(int)$request->role_id);
+        $group->inviteUser(Auth::user(),(int)$request->role_id);
         return redirect()->route('user.group.index');
     }
 
@@ -83,12 +83,12 @@ class UserGroupController extends Controller
 
     //
     public function acceptJoinRequest(int $group_id){
-        Auth::user()->acceptJoinRequest($group_id);
+        Auth::user()->acceptGroupJoinRequest($group_id);
         return redirect()->back();
     }
     //
     public function deniedJoinRequest(int $group_id){
-        Auth::user()->deniedJoinRequest($group_id);
+        Auth::user()->deniedGroupJoinRequest($group_id);
         return redirect()->back();
     }
 }

@@ -82,8 +82,8 @@ trait UseRoleInModel
         return $this->roles()->where('index',$index)->first();
     }
     //ok
-    public function getRoleByUser(int $user_id){
-        return $this->getRole($this->users()->wherePivot('user_id',$user_id)->first()->pivot->role_id);
+    public function getRoleByUser($user){
+        return $this->getRole($this->getUserWithPivot($user)->pivot->role_id);
     }
     //ok
     public function usersHaveRole($role){
@@ -103,6 +103,10 @@ trait UseRoleInModel
             return $diff->min();
         }
     }
+    //
+    public function checkRolePassword($role,string $password){
+        return $this->getRole($role)->checkPassword($password);
+    }
 
     //ok
     public function users(){
@@ -110,40 +114,46 @@ trait UseRoleInModel
     }
     
     //ok
-    public function inviteUser(int $user_id,$role){
-        $user=User::find($user_id);
-        $role_id=$this->getRole($role)->id;
-        if ($user->hasModelUsingRole(self::class,$this->id)) {
-            $this->removeUser($user_id);
+    public function inviteUser($user,$role){
+        if(is_int($user)){
+            $user=User::find($user);
         }
-        $user->assignRole($role_id);
-        return $this->users()->attach($user_id,['role_id'=>$role_id]);
+        $role=$this->getRole($role);
+        if ($user->hasModelUsingRole(self::class,$this->id)) {
+            $this->removeUser($user->id);
+        }
+        $user->assignRole($role->id);
+        return $this->users()->attach($user->id,['role_id'=>$role->id]);
     }
     //ok
-    public function removeUser(int $user_id){
-        $user=$this->getUser($user_id);
+    public function removeUser($user){
+        $user=$this->getUserWithPivot($user);
         $role_id=$user->pivot->role_id;
         $user->removeRole($role_id);
-        return $this->users()->detach($user_id);
+        return $this->users()->detach($user->id);
     }
 
     
 
     //ok
-    public function hasUser(int $id){
-        return $this->users()->get()->contains('id',$id);
-    }
-    //ok
-    public function hasUserInRole(int $user_id,$role){
-        if (is_string($role)) {
-            return $this->users()->wherePivot('role_id',$this->getRole($role)->id)->get()->contains('id',$user_id);
-        }elseif(is_int($role)){
-            return $this->users()->wherePivot('role_id',$role)->get()->contains('id',$user_id);
+    public function hasUser($user){
+        if(is_int($user)){
+            return $this->users()->get()->contains('id',$user);
+        }else{
+            return $this->users()->get()->contains('id',$user->id);
         }
     }
     //ok
-    public function getUser(int $id){
-        return $this->users()->find($id);
+    public function hasUserInRole($user,$role){
+        return $this->getUserWithPivot($user)->pivot->role_id==$this->getRole($role)->id;
+    }
+    //ok
+    public function getUserWithPivot($user){
+        if(is_int($user)){
+            return $this->users()->find($user);
+        }else{
+            return $this->users()->find($user->id);
+        }
     }
 
     /**
@@ -156,22 +166,42 @@ trait UseRoleInModel
     public function getUsersRequestJoin(){
         return $this->usersRequestJoin()->get();
     }
+    //ok
+    public function getUserRequestJoin($user){
+        if(is_int($user)){
+            return $this->usersRequestJoin()->find($user);
+        }else{
+            return $this->usersRequestJoin()->find($user->id);
+        }
+    }
 
     //ok
-    public function hasUserJoinRequest(int $user_id){
-        return $this->usersRequestJoin()->wherePivot('user_id',$user_id)->get()->isNotEmpty();
+    public function hasUserRequestJoin($user){
+        return is_null($this->getUserRequestJoin($user))?false:true;
     }
     //ok
-    public function requestJoin(int $user_id,$role){
-        if($this->hasUserJoinRequest($user_id)){
-            $this->usersRequestJoin()->detach($user_id);
+    public function requestJoin($user,$role){
+        if($this->hasUserRequestJoin($user)){
+            if(is_int($user)){
+                $this->usersRequestJoin()->detach($user);
+            }else{
+                $this->usersRequestJoin()->detach($user->id);
+            }
         }
         $role=$this->getRole($role);
-        return $this->usersRequestJoin()->attach($user_id,['role_id'=>$role->id]);
+        if(is_int($user)){
+            return $this->usersRequestJoin()->attach($user,['role_id'=>$role->id]);
+        }else{
+            return $this->usersRequestJoin()->attach($user->id,['role_id'=>$role->id]);
+        }
     }
     //ok
-    public function quitRequestJoin(int $user_id){
-        return $this->usersRequestJoin()->detach($user_id);
+    public function quitRequestJoin($user){
+        if(is_int($user)){
+            return $this->usersRequestJoin()->detach($user);
+        }else{
+            return $this->usersRequestJoin()->detach($user->id);
+        }
     }
 
 }

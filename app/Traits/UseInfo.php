@@ -80,6 +80,10 @@ trait UseInfo
         return $this->infoBases()->where('info_template_id',$template->id)->first();
     }
     //
+    public function getInfoBases(){
+        return $this->infoBases()->get();
+    }
+    //
     public function getInfoBasesByTemplate($template){
         $template=InfoTemplate::findByIdOrName($template,$this);
         return $this->infoBases()->where('info_template_id',$template->id)->get();

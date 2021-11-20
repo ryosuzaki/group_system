@@ -5,8 +5,10 @@ use App\User;
 
 
 return [
-    //
-    'types'=>[
+    /**
+     * 
+     */
+    'group_types'=>[
         /*
         "type_name"=>[
             //表示名
@@ -53,7 +55,9 @@ return [
             ],
         ],
     ],
-    //
+    /**
+     * 
+     */
     'role'=>[
         'namespace'=>'App\Models\Components\Role',
         
@@ -67,7 +71,9 @@ return [
         'max_num_of_roles'=>10,
     ],
 
-    //
+    /**
+     * 
+     */
     "info_templates"=>[
         "diss"=>[
             "info"=>[
@@ -78,6 +84,14 @@ return [
                 'description'=>'基本の情報表示',
                 "default_edit"=>['name'=>'変更','icon'=>'<i class="material-icons">edit</i>'],
                 "only_one"=>false,
+                'view'=>[
+                    'show'=>[
+                        'path'=>'',
+                    ],
+                    'edit'=>[
+                        'path'=>'',
+                    ],
+                ],
             ],
             "congestion"=>[
                 "default_name"=>"混雑状況",

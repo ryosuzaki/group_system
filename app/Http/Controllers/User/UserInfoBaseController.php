@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Info\InfoTemplate;
+use App\User;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -16,13 +17,15 @@ class UserInfoBaseController extends Controller
     //
     public function index()
     {
-        return view('user.info_base.index')->with(['user'=>Auth::user(),'bases'=>Auth::user()->infoBases()->get()]);
+        $user=Auth::user();
+        return view('user.info_base.index')->with(['user'=>$user,'bases'=>$user->getInfoBases()]);
     }
 
     //
     public function create()
     {
-        return view('user.info_base.create')->with(['user'=>Auth::user(),'templates'=>InfoTemplate::where('model',get_class(Auth::user()))->get()]);
+        $user=Auth::user();
+        return view('user.info_base.create')->with(['user'=>$user,'templates'=>InfoTemplate::getByModel(User::class)]);
     }
 
     //
