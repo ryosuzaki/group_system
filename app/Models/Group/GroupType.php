@@ -8,6 +8,14 @@ class GroupType extends Model
 {
     //
     protected $guarded = ['id','name'];
+
+    public static function setUp(){
+        foreach(config("group_system.group_types") as $type=>$body){
+            self::create([
+                'name'=>$type,
+            ]);
+        }
+    }
     
     //
     public static function findByName($name){
@@ -30,19 +38,28 @@ class GroupType extends Model
     
 
     //
-    public function getConfig(){
-        return config("group_system.group_types.".$this->name."");
+    public function getConfigAttribute(){
+        $type=config("group_system.group_types.".$this->name);
+        while(is_string($type)){
+            $type_path=$type;
+            $type=config($type);
+        }
+        return $type;
     }
     //
     public function getName(){
-        return config("group_system.group_types.".$this->name.".name");
+        return $this->config["name"];
     }
     //
     public function getInitialInfoAttribute(){
-        return config("group_system.group_types.".$this->name.".initial_info");
+        return $this->config["initial_info"];
     }
     //
     public function getAvailableUserInfoAttribute(){
-        return config("group_system.group_types.".$this->name.".available_user_info");
+        return $this->config["available_user_info"];
+    }
+    //
+    public function getViewAttribute(){
+        return $this->config["view"];
     }
 }

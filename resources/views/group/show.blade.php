@@ -16,8 +16,12 @@
         </div>
     </div>
 
-    @if(Illuminate\Support\Facades\View::exists('group.show.'.$group->getTypeName()))
-    @include('group.show.'.$type->name, ['group'=>$group,'bases'=>$bases])
+    @php
+    //group_typeごとに異なるviewを埋め込む 
+    $view_path=$type->view["show"]["path"];
+    @endphp
+    @if(isset($view_path))
+    @include($view_path, ['group'=>$group,'bases'=>$bases])
     @else
 
     @endif

@@ -11,12 +11,20 @@ class InfoTemplate extends Model
 
     //
     public static function setUp(){
-        foreach(config("group_system.info_templates") as $package_name=>$templates){
-            foreach($templates as $template_name=>$template){
-                self::create([
-                    "name"=>$package_name."/".$template_name,
-                    "model"=>$template["model"],
-                ]);
+        foreach(config("group_system.info_templates") as $package_name=>$models){
+            while(is_string($models)){
+                $models=config($models);
+            }
+            foreach($models as $model=>$templates){
+                while(is_string($templates)){
+                    $templates=config($templates);
+                }
+                foreach($templates as $template_name=>$template){
+                    self::create([
+                        "name"=>$package_name."/".$template_name,
+                        "model"=>$model,
+                    ]);
+                }
             }
         }
     }
@@ -50,12 +58,20 @@ class InfoTemplate extends Model
     }
 
     //
-    public function getConfig(string $path=null){
-        if(is_null($path)){
-            return config("group_system.info_templates.".$this->package_name.".".$this->template_name);
-        }else{
-            return config("group_system.info_templates.".$this->package_name.".".$this->template_name.".".$path);
+    public function getConfigAttribute(){
+        $models=config("group_system.info_templates.".$this->package_name);
+        while(is_string($models)){
+            $models=config($models);
         }
+        $templates=$models[$this->model];
+        while(is_string($templates)){
+            $templates=config($templates);
+        }
+        $template=$templates[$this->template_name];
+        while(is_string($template)){
+            $template=config($template);
+        }
+        return $template;
     }
 
     //
@@ -70,26 +86,30 @@ class InfoTemplate extends Model
     }
     //
     public function getDefaultNameAttribute(){
-        return config("group_system.info_templates.".$this->package_name.".".$this->template_name.".default_name");
+        return $this->config["default_name"];
     }
     //
     public function getDefaultInfoAttribute(){
-        return config("group_system.info_templates.".$this->package_name.".".$this->template_name.".default_info");
+        return $this->config["default_info"];
     }
     //
     public function getDefaultEditAttribute(){
-        return config("group_system.info_templates.".$this->package_name.".".$this->template_name.".default_edit");
+        return $this->config["default_edit"];
     }
     //
     public function getDefaultViewableAttribute(){
-        return config("group_system.info_templates.".$this->package_name.".".$this->template_name.".default_viewable");
+        return $this->config["default_viewable"];
     }
     //
     public function getDescriptionAttribute(){
-        return config("group_system.info_templates.".$this->package_name.".".$this->template_name.".description");
+        return $this->config["description"];
     }
     //
     public function getOnlyOneAttribute(){
-        return config("group_system.info_templates.".$this->package_name.".".$this->template_name.".only_one");
+        return $this->config["only_one"];
+    }
+    //
+    public function getViewAttribute(){
+        return $this->config["view"];
     }
 }

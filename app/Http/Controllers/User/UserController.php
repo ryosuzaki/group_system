@@ -28,7 +28,7 @@ class UserController extends Controller
     public function getInfo(int $index=0)
     {
         $base=Auth::user()->getInfoBaseByIndex($index);
-        return response()->view($base->getTemplate()->getConfig("view.show.path"), ['base'=>$base,'info'=>$base->info()]);
+        return response()->view($base->getTemplate()->view["show"]["path"], ['base'=>$base,'info'=>$base->info()]);
     }
     /**
      * 
