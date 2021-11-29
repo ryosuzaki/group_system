@@ -9,8 +9,6 @@ use App\Models\Group\Group;
 
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Components\Announcement;
-
 use Validator;
 
 class UserGroupController extends Controller
@@ -22,33 +20,11 @@ class UserGroupController extends Controller
         return view('user.group.index')->with([
             'user'=>$user,
             'groups'=>$user->groups()->get(),
-            //'extras'=>$user->extraGroups()->get(),
             'requests'=>$user->groupsRequestJoin()->get(),
             ]);
     }
 
-    /**
-     * グループに参加
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * グループに参加
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-       
-    }
-
-    //
+    /*
     public function edit(Group $group)
     {
         return view('user.group.edit')->with([
@@ -73,22 +49,23 @@ class UserGroupController extends Controller
         $group->inviteUser(Auth::user(),(int)$request->role_id);
         return redirect()->route('user.group.index');
     }
+    */
 
     //
-    public function destroy(int $group_id)
+    public function destroy(Group $group)
     {
-        Auth::user()->leaveGroup($group_id);
+        Auth::user()->leaveGroup($group->id);
         return redirect()->route('user.group.index');
     }
 
     //
-    public function acceptJoinRequest(int $group_id){
-        Auth::user()->acceptGroupJoinRequest($group_id);
+    public function acceptJoinRequest(Group $group){
+        Auth::user()->acceptGroupJoinRequest($group->id);
         return redirect()->back();
     }
     //
-    public function deniedJoinRequest(int $group_id){
-        Auth::user()->deniedGroupJoinRequest($group_id);
+    public function deniedJoinRequest(Group $group){
+        Auth::user()->deniedGroupJoinRequest($group->id);
         return redirect()->back();
     }
 }

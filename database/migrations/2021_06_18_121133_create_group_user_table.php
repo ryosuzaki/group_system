@@ -14,47 +14,7 @@ class CreateGroupUserTable extends Migration
     public function up()
     {
         $tableNames = config('permission.table_names');
-        /*
-        Schema::create('group_role_user', function (Blueprint $table) use ($tableNames){
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('group_id');
-            $table->unsignedBigInteger('role_id');
-            $table->index(['user_id','group_id','role_id']);
-            $table->unique(['group_id','user_id']);
-            $table->timestamps();
-            //
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on($tableNames['roles'])->onDelete('cascade');
-        });
-
-        Schema::create('group_join_requests', function (Blueprint $table) use ($tableNames){
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('group_id');
-            $table->unsignedBigInteger('role_id');
-            $table->index(['user_id','group_id','role_id']);
-            $table->unique(['group_id','user_id']);
-            $table->timestamps();
-            //
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on($tableNames['roles'])->onDelete('cascade');
-        });*/
-
-        Schema::create('extra_group_users', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('group_id');
-            $table->string('name');
-            $table->index(['user_id','group_id']);
-            $table->unique(['name','group_id','user_id']);
-            $table->timestamps();
-            //
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-        });
-
-
-
+        
         //
         Schema::create('model_role_user', function (Blueprint $table) use ($tableNames){
             $table->unsignedBigInteger('user_id');
@@ -86,10 +46,6 @@ class CreateGroupUserTable extends Migration
      */
     public function down()
     {
-        //Schema::dropIfExists('group_role_user');
-        //Schema::dropIfExists('group_join_requests');
-        Schema::dropIfExists('extra_group_users');
-
         Schema::dropIfExists('model_role_user');
         Schema::dropIfExists('join_requests');
     }

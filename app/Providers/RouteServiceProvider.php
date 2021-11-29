@@ -40,8 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
 
         //
-        $this->mapKaigoHackGroupRoutes();
-        $this->mapKaigoHackUserRoutes();
+        $this->mapGroupSystemRoutes();
     }
 
     /**
@@ -73,15 +72,9 @@ class RouteServiceProvider extends ServiceProvider
              ->group(base_path('routes/api.php'));
     }
 
-    public function mapKaigoHackGroupRoutes(){
+    public function mapGroupSystemRoutes(){
         Route::middleware('web')
             ->namespace($this->namespace)
-            ->group(base_path('routes/kaigo_hack_group.php'));
-    }
-
-    public function mapKaigoHackUserRoutes(){
-        Route::middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/kaigo_hack_user.php'));
+            ->group(base_path('routes/group_system.php'));
     }
 }

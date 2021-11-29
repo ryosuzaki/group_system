@@ -75,6 +75,8 @@ trait UseRoleInModel
             return $this->roles()->where('role_name',$role)->first();
         }elseif(is_int($role)){
             return $this->roles()->find($role);
+        }elseif(is_a($role,Role::class)){
+            return $role;
         }
     }
     //ok

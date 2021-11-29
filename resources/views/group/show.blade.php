@@ -16,12 +16,8 @@
         </div>
     </div>
 
-    @php
-    //group_typeごとに異なるviewを埋め込む 
-    $view_path=$type->view["show"]["path"];
-    @endphp
-    @if(isset($view_path))
-    @include($view_path, ['group'=>$group,'bases'=>$bases])
+    @if(isset($type->view["show"]["path"]))
+    @include($type->view["show"]["path"], ['group'=>$group,'infos'=>$infos])
     @else
 
     @endif
@@ -52,10 +48,10 @@ function embed_info_view(type,url,embed_to){
 $(function(){
     window.history.replaceState(null,null,"{{route('group.show',['group'=>$group,'index'=>$index])}}");
     embed_info_view("get","{{route('group.get_info',['group'=>$group,'index'=>$index])}}","#embed_info{{$index}}");
-    @foreach ($bases as $base)
-    $("a[href='#pill{{$base->index}}']").click(function(){
-        window.history.replaceState(null,null,"{{route('group.show',['group'=>$group,'index'=>$base->index])}}");
-        embed_info_view("get","{{route('group.get_info',['group'=>$group,'index'=>$base->index])}}","#embed_info{{$base->index}}");
+    @foreach ($infos as $info)
+    $("a[href='#pill{{$info->index}}']").click(function(){
+        window.history.replaceState(null,null,"{{route('group.show',['group'=>$group,'index'=>$info->index])}}");
+        embed_info_view("get","{{route('group.get_info',['group'=>$group,'index'=>$info->index])}}","#embed_info{{$info->index}}");
     });
     @endforeach
 });
@@ -64,24 +60,24 @@ $(function(){
 <div class="card mt-0 mb-2">
     <div class="card-body">
         <ul class="nav nav-pills nav-pills-primary">
-            @foreach ($bases as $base)
+            @foreach ($infos as $info)
             <li class="nav-item mx-auto">
-                <a class="nav-link @if($base->index==$index) active @endif" href="#pill{{$base->index}}" data-toggle="tab">{{$base->name}}</a>
+                <a class="nav-link @if($info->index==$index) active @endif" href="#pill{{$info->index}}" data-toggle="tab">{{$info->name}}</a>
             </li>
             @endforeach
         </ul>
 
         <div class="tab-content tab-space pb-0">
-            @foreach ($bases as $base)
+            @foreach ($infos as $info)
             @php
-            $template=$base->getTemplate();
+            $template=$info->getTemplate();
             @endphp
-            <div class="tab-pane @if($base->index==$index) active @endif" id="pill{{$base->index}}">
-                <div id="embed_info{{$base->index}}"></div>
-                @can('update-group-info',[$group,$base->index])
+            <div class="tab-pane @if($info->index==$index) active @endif" id="pill{{$info->index}}">
+                <div id="embed_info{{$info->index}}"></div>
+                @can('update-group-info',[$group,$info->index])
                 @if(!empty($template->edit))
                 <div class="d-flex">
-                    <a class="btn btn-outline-primary btn-block mx-auto" href="{{route('group.info.edit',[$group->id,$base->index])}}">{!! $template->edit['icon'] !!} {{$template->edit['name']}}</a>
+                    <a class="btn btn-outline-primary btn-block mx-auto" href="{{route('group.info.edit',[$group->id,$info->index])}}">{!! $template->edit['icon'] !!} {{$template->edit['name']}}</a>
                 </div>
                 @endif
                 @endcan
@@ -89,9 +85,9 @@ $(function(){
             @endforeach
 
         </div>
-        @can('viewAny-group-info-bases', $group)
+        @can('viewAny-group-infos', $group)
         <div class="row">
-            <a class="btn btn-primary btn-block" href="{{route('group.info_base.index',[$group->id])}}"><i class="material-icons">list</i> 情報編集</a>
+            <a class="btn btn-primary btn-block" href="{{route('group.infos.index',[$group->id])}}"><i class="material-icons">list</i> 情報編集</a>
         </div>
         @endcan
     </div>

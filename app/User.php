@@ -25,15 +25,11 @@ class User extends Authenticatable
     use RecieveAnnouncement;
 
     //
-    protected $guarded=[];
+    protected $guarded=["id"];
 
     //
     protected $hidden = [
          'remember_token','password'
-    ];
-
-    protected $dates = [
-        'last_used',
     ];
 
     //
@@ -51,8 +47,9 @@ class User extends Authenticatable
         return $user;
     }
 
-    public static function tearDown(){
-
+    public function tearDown(){
+        $this->BeforeDeleteModelUsingInfo();
+        return $this->delete();
     }
     
 
@@ -148,28 +145,4 @@ class User extends Authenticatable
     public function deniedGroupJoinRequest(int $group_id){
         return $this->deniedModelJoinRequest(Group::class,$group_id);
     }
-
-
-
-
-    //
-    public function extraGroups(){
-        return $this->belongsToMany(
-            'App\Models\Group\Group','extra_group_users','user_id','group_id'
-        )->withPivot('name')->withTimestamps();
-    }
-    //
-    public function attachExtraGroup(int $group_id,string $extra_name){
-        return $this->extraGroups()->attach($group_id,['name'=>$extra_name]);
-    }
-    //
-    public function detachExtraGroup(int $group_id,string $extra_name){
-        return $this->extraGroups()->wherePivot('name',$extra_name)->detach($group_id);
-    }
-    //
-    public function hasExtraGroup(int $group_id,string $extra_name){
-        return $this->extraGroups()->wherePivot('name',$extra_name)->get()->contains('id',$group_id);
-    }
-
-
 }

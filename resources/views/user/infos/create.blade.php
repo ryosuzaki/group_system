@@ -3,11 +3,11 @@
 @section('content')
 
 <div class="card">
-{{ Breadcrumbs::render('user.info_base.create') }}
+{{ Breadcrumbs::render('user.infos.create') }}
     <div class="card-body">
         <h3 class="text-center mb-4">追加</h3>
 
-        <form method="POST" action="{{ route('user.info_base.store') }}">
+        <form method="POST" action="{{ route('user.infos.store') }}">
             @csrf
 
             @include('info.info_template.create',['templates'=>$templates])

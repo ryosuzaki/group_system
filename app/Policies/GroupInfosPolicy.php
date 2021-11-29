@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Group\Group;
 use App\User;
 
-class GroupInfoBasesPolicy
+class GroupInfosPolicy
 {
     //
     public function viewAny(User $user, Group $group)
@@ -14,7 +14,7 @@ class GroupInfoBasesPolicy
         if (!$role){
             return false;
         }
-        return $role->hasPermissionTo('group_info_bases.viewAny');
+        return $role->hasPermissionTo('group_infos.viewAny');
     }
     //
     public function create(User $user, Group $group)
@@ -23,7 +23,7 @@ class GroupInfoBasesPolicy
         if (!$role){
             return false;
         }
-        return $role->hasPermissionTo('group_info_bases.create');
+        return $role->hasPermissionTo('group_infos.create');
     }
     //
     public function update(User $user, Group $group)
@@ -32,7 +32,7 @@ class GroupInfoBasesPolicy
         if (!$role){
             return false;
         }
-        return $role->hasPermissionTo('group_info_bases.update');
+        return $role->hasPermissionTo('group_infos.update');
     }
     //
     public function delete(User $user, Group $group)
@@ -41,6 +41,6 @@ class GroupInfoBasesPolicy
         if (!$role){
             return false;
         }
-        return $role->hasPermissionTo('group_info_bases.delete');
+        return $role->hasPermissionTo('group_infos.delete');
     }
 }

@@ -13,8 +13,13 @@ class GroupPolicy
 
     //
     public function viewAny(User $user,GroupType $type){
-        return $type->available_index;
+        return $type->available_index_view;
     }
+
+    public function create(User $user,GroupType $type){
+        return $type->available_create_view;
+    }
+
     //
     public function update(User $user, Group $group)
     {

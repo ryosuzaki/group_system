@@ -62,4 +62,20 @@ class GroupType extends Model
     public function getViewAttribute(){
         return $this->config["view"];
     }
+    //
+    public function getAvailableIndexViewAttribute(){
+        return $this->config["available_index_view"];
+    }
+    //
+    public function getAvailableCreateViewAttribute(){
+        return $this->config["available_create_view"];
+    }
+    //
+    public function getAdminAttribute(){
+        return $this->config["admin"];
+    }
+    //
+    public function getPermissionAttribute(){
+        return $this->config["permission"];
+    }
 }

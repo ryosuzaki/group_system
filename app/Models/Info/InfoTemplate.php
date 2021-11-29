@@ -8,6 +8,8 @@ class InfoTemplate extends Model
 {
     //
     protected $guarded=["id","name"];
+    //
+    protected $dates = ["created_at","updated_at"];
 
     //
     public static function setUp(){
@@ -39,17 +41,18 @@ class InfoTemplate extends Model
     //
     public static function findByIdOrName($template,$model=null){
         if (is_string($template)&&$model!=null) {
-            return self::findByName($template,get_class($model));
+            return self::findByName($template,$model);
         }elseif(is_int($template)){
             return self::find($template);
         }else{
-            throw new Exception("error!!!!");
+            //throw new Exception("error!!!!");
+            return false;
         }
     }
 
     //
-    public function infoBases(){
-        return $this->hasMany('App\Models\Info\InfoBase','info_template_id');
+    public function infos(){
+        return $this->hasMany('App\Models\Info\Info','info_template_id');
     }
 
     //
@@ -93,12 +96,12 @@ class InfoTemplate extends Model
         return $this->config["default_info"];
     }
     //
-    public function getDefaultEditAttribute(){
-        return $this->config["default_edit"];
-    }
-    //
     public function getDefaultViewableAttribute(){
         return $this->config["default_viewable"];
+    }
+    //
+    public function getEditAttribute(){
+        return $this->config["edit"];
     }
     //
     public function getDescriptionAttribute(){
@@ -111,5 +114,9 @@ class InfoTemplate extends Model
     //
     public function getViewAttribute(){
         return $this->config["view"];
+    }
+    //
+    public function getConstructorAttribute(){
+        return $this->config["constructor"];
     }
 }

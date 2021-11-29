@@ -3,8 +3,6 @@
 namespace App\Models\Group;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Info\InfoBase;
-
 use App\User;
 
 use App\Models\Group\GroupType;
@@ -16,7 +14,6 @@ use App\Traits\UploadImg;
 use App\Traits\SendAnnouncement;
 use App\Traits\UseLocation;
 
-use App\Models\Upload\Image;
 use Illuminate\Http\UploadedFile;
 
 use Spatie\Permission\Models\Role;
@@ -28,7 +25,9 @@ use Illuminate\Support\Facades\Hash;
 
 class Group extends Model
 {
-    use UseInfo;
+    use UseInfo{
+        UseInfo::getViewableInfos as trait_getViewableInfos;
+    }
     use UseRoleInModel;
     use UploadImg{
         uploadImg::uploadImg as trait_uploadImg;
@@ -52,18 +51,18 @@ class Group extends Model
             $permissions[]='group.'.$action;
         }
         //
-        if($permission_config["group_info_bases"]){
-            $permissions[]='group_info_bases.*';
-            foreach(config('group_system.role.group_info_bases') as $action){
-                $permissions[]='group_info_bases.'.$action;
+        if($permission_config["group_infos"]){
+            $permissions[]='group_infos.*';
+            foreach(config('group_system.role.group_infos') as $action){
+                $permissions[]='group_infos.'.$action;
             }
         }
         //
         $permissions[]='group_info.*';
-        foreach($this->infoBases()->get() as $base){
-            $permissions[]='group_info.'.$base->index.'.*';
+        foreach($this->infos()->get() as $info){
+            $permissions[]='group_info.'.$info->index.'.*';
             foreach(config('group_system.role.group_info') as $action){
-                $permissions[]='group_info.'.$base->index.'.'.$action;
+                $permissions[]='group_info.'.$info->index.'.'.$action;
             }
         }
         //
@@ -99,10 +98,10 @@ class Group extends Model
         ]);
         //
         foreach($type->initial_info as $template){
-            $group->createInfoBase($template);
+            $group->createInfo($template);
         }
         //
-        $admin_config=config('group_system.group_types.'.$type->name.'.admin');
+        $admin_config=$type->admin;
         //
         $admin=$group->createRole($admin_config['name'],$admin_password);
         //
@@ -142,39 +141,37 @@ class Group extends Model
     /**
      * 
      */
-    public function getUserInfoBases(int $user_id){
-        return $this->getUser($user_id)->infoBases()->whereIn('info_template_id',$this->getType()->available_user_info)->get();
+    public function getUserInfos(int $user_id){
+        return $this->getUser($user_id)->infos()->whereIn('info_template_id',$this->getType()->available_user_info)->get();
     }
-    public function getUserInfoBase(int $user_id,int $template_id){
+    public function getUserInfo(int $user_id,int $template_id){
         if(collect($this->getType()->available_user_info)->contain($template_id)){
-            return $this->getUser($user_id)->getInfoBaseByTemplate($template_id);
+            return $this->getUser($user_id)->getInfoByTemplate($template_id);
         }
     }
 
     /**
      * 
      */
-    public function getViewableInfoBases($role=null){
+    public function getViewableInfos($role=null){
         if(is_null($role)){
-            return $this->infoBases()->where('viewable',true)->get();
+            return $this->trait_getViewableInfos();
         }else{
-            $role=$this->getRole($role);
-            $viewable_bases=[];
-            foreach ($this->infoBases()->get() as $base){
-                if($base->viewable||$role->hasPermissionTo('group_info.'.$base->index.'.view')){
-                    $viewable_bases[]=$base;
-                }
-            }
-            return $viewable_bases;
+            return $this->getViewableInfosByRole($role);
         }
     }
-    public function getViewableInfoBasesByRole($role){
-        $role=$this->getRole($role);
-        $bases=$this->infoBases()->get();
+    /**
+     * 
+     */
+    public function getViewableInfosByRole($role){
+        if(is_string($role)||is_int($role)){
+            $role=$this->getRole($role);
+        }
+        $infos=$this->getInfos();
         $return=[];
-        foreach ($bases as $base){
-            if($base->viewable||$role->hasPermissionTo('group_info.'.$base->index.'.view')){
-                $return[]=$base;
+        foreach ($infos as $info){
+            if($info->viewable||$role->hasPermissionTo('group_info.'.$info->index.'.view')){
+                $return[]=$info;
             }
         }
         return $return;
@@ -185,39 +182,5 @@ class Group extends Model
      */
     public function uploadImg(UploadedFile $img){
         return $this->trait_uploadImg($img,$this->unique_name);
-    }
-    
-    
-
-
-
-    //
-    //functions of extra user
-    //
-    //
-    public function extraUsers(string $name=null){
-        if($name == null){
-            return $this->belongsToMany(
-                config('auth.providers.users.model'),'extra_group_users','group_id','user_id'
-            )->withPivot('name');
-        }else{
-            return $this->belongsToMany(
-                config('auth.providers.users.model'),'extra_group_users','group_id','user_id'
-            )->withPivot('name')->wherePivot('name',$name);
-        }
-    }
-    //
-    public function countExtraUsers(string $name){
-        return $this->extraUsers()->wherePivot('name',$name)->get()->count();
-    }
-
-
-    
-
-
-
-   
-    
-
-    
+    }    
 }

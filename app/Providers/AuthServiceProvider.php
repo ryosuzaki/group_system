@@ -9,7 +9,7 @@ use App\User;
 use App\Models\Group\Group;
 use App\Policies\GroupPolicy;
 
-use App\Policies\GroupInfoBasesPolicy;
+use App\Policies\GroupInfosPolicy;
 use App\Policies\GroupInfoPolicy;
 
 use App\Policies\GroupRolePolicy;
@@ -41,19 +41,19 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         //
-        foreach (config('kaigohack.role.group_info_bases') as $action){
-            Gate::define($action.'-group-info-bases','App\Policies\GroupInfoBasesPolicy@'.$action);    
+        foreach (config('group_system.role.group_infos') as $action){
+            Gate::define($action.'-group-infos','App\Policies\GroupInfosPolicy@'.$action);    
         }
         //
-        foreach (config('kaigohack.role.group_info') as $action){
+        foreach (config('group_system.role.group_info') as $action){
             Gate::define($action.'-group-info','App\Policies\GroupInfoPolicy@'.$action);    
         }
         //
-        foreach (config('kaigohack.role.group_roles') as $action){
+        foreach (config('group_system.role.group_roles') as $action){
             Gate::define($action.'-group-roles','App\Policies\GroupRolesPolicy@'.$action);
         }
         //
-        foreach (config('kaigohack.role.group_users') as $action){
+        foreach (config('group_system.role.group_users') as $action){
             Gate::define($action.'-group-users','App\Policies\GroupUsersPolicy@'.$action);
         }
     }

@@ -18,11 +18,6 @@
             <li class="nav-item mx-auto">
                 <a class="nav-link @if($requests->isEmpty())active @endif" href="#group" data-toggle="tab">参加中</a>
             </li>
-
-            
-            <li class="nav-item mx-auto">
-                <a class="nav-link" href="#extra" data-toggle="tab">アクション中</a>
-            </li>
             
 
         </ul>
@@ -142,31 +137,6 @@
                                 @endif
                                 
                                 </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-            
-            <div class="tab-pane" id="extra">
-                <div class="table-responsive">
-                    <table class="table text-nowrap">
-                        <thead>
-                        <tr>
-                            <th>種類</th>
-                            <th>名前</th>
-                            <th>アクション</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($extras as $group)
-                            <tr>
-                                <td>{{$group->getFormattedTypeName()}}</td>
-                                <td><a href="{{route('group.show',$group->id)}}">{{$group->name}}</a></td>
-                                <td>{{$group->pivot->name}}</td>                                    
                             </tr>
                             @endforeach
                         </tbody>

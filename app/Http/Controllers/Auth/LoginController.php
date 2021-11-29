@@ -29,9 +29,6 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-        $user=Auth::user();
-        $user->last_used=now();
-        $user->save();
         return route('user.show');
     }
     /**

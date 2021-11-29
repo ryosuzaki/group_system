@@ -4,7 +4,7 @@ use App\Models\Group\GroupType;
 use App\Models\Group\Group;
 use App\User;
 
-use App\Models\Info\InfoBase;
+use App\Models\Info\Info;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +16,7 @@ Breadcrumbs::for('home', function ($trail) {
 //
 Breadcrumbs::for('home.group_type', function ($trail,GroupType $type) {
     $trail->parent('home');
-    $trail->push($type->formatted_name, route('home.group_type',$type));
+    $trail->push($type->getName(), route('home.group_type',$type));
 });
 
 
@@ -57,9 +57,9 @@ Breadcrumbs::for('group.role.edit', function ($trail,Group $group,int $index) {
     $trail->push('変更', route('group.role.edit',[$group,$index]));
 });
 //
-Breadcrumbs::for('group.permission.edit', function ($trail,Group $group,int $index) {
+Breadcrumbs::for('group.role.edit_permissions', function ($trail,Group $group,int $index) {
     $trail->parent('group.role.index',$group);
-    $trail->push('権限', route('group.permission.edit',[$group,$index]));
+    $trail->push('権限', route('group.role.edit_permissions',[$group,$index]));
 });
 
 
@@ -87,25 +87,25 @@ Breadcrumbs::for('group.user.show', function ($trail,Group $group,User $user,int
 //
 Breadcrumbs::for('group.info.edit', function ($trail,Group $group,int $index) {
     $trail->parent('group.show',$group);
-    $trail->push($group->getInfoBaseByIndex($index)->name, route('group.info.edit',[$group,$index]));
+    $trail->push($group->getInfoByIndex($index)->name, route('group.info.edit',[$group,$index]));
 });
 
 
 
 //
-Breadcrumbs::for('group.info_base.index', function ($trail,Group $group) {
+Breadcrumbs::for('group.infos.index', function ($trail,Group $group) {
     $trail->parent('group.show',$group);
-    $trail->push('情報', route('group.info_base.index',$group));
+    $trail->push('情報', route('group.infos.index',$group));
 });
 //
-Breadcrumbs::for('group.info_base.create', function ($trail,Group $group) {
-    $trail->parent('group.info_base.index',$group);
-    $trail->push('追加', route('group.info_base.create',$group));
+Breadcrumbs::for('group.infos.create', function ($trail,Group $group) {
+    $trail->parent('group.infos.index',$group);
+    $trail->push('追加', route('group.infos.create',$group));
 });
 //
-Breadcrumbs::for('group.info_base.edit', function ($trail,Group $group,int $index) {
-    $trail->parent('group.info_base.index',$group);
-    $trail->push('変更', route('group.info_base.edit',[$group,$index]));
+Breadcrumbs::for('group.infos.edit', function ($trail,Group $group,int $index) {
+    $trail->parent('group.infos.index',$group);
+    $trail->push('変更', route('group.infos.edit',[$group,$index]));
 });
 
 
@@ -126,25 +126,25 @@ Breadcrumbs::for('user.edit', function ($trail) {
 });
 
 //
-Breadcrumbs::for('user.info.edit', function ($trail,InfoBase $info_base) {
+Breadcrumbs::for('user.info.edit', function ($trail,Info $info) {
     $trail->parent('user.show');
-    $trail->push($info_base->name, route('user.info.edit',$info_base));
+    $trail->push($info->name, route('user.info.edit',$info));
 });
 
 //
-Breadcrumbs::for('user.info_base.index', function ($trail) {
+Breadcrumbs::for('user.infos.index', function ($trail) {
     $trail->parent('user.show');
-    $trail->push('情報', route('user.info_base.index'));
+    $trail->push('情報', route('user.infos.index'));
 });
 //
-Breadcrumbs::for('user.info_base.create', function ($trail) {
-    $trail->parent('user.info_base.index');
-    $trail->push('追加', route('user.info_base.create'));
+Breadcrumbs::for('user.infos.create', function ($trail) {
+    $trail->parent('user.infos.index');
+    $trail->push('追加', route('user.infos.create'));
 });
 //
-Breadcrumbs::for('user.info_base.edit', function ($trail,InfoBase $info_base) {
-    $trail->parent('user.info_base.index');
-    $trail->push('変更', route('user.info_base.edit',$info_base));
+Breadcrumbs::for('user.infos.edit', function ($trail,Info $info) {
+    $trail->parent('user.infos.index');
+    $trail->push('変更', route('user.infos.edit',$info));
 });
 
 //
@@ -163,7 +163,7 @@ Breadcrumbs::for('user.group.edit', function ($trail,Group $group) {
     $trail->push('変更', route('user.group.edit',$group));
 });
 
-//
+/*
 Breadcrumbs::for('user.announcement.index', function ($trail) {
     $trail->parent('user.show');
     $trail->push('お知らせ', route('user.announcement.index'));

@@ -6,10 +6,7 @@
 <div class="card">
     <div class="card-body">
         {{ Breadcrumbs::render('group.create',$type) }}
-        @if(Illuminate\Support\Facades\View::exists('group.create.'.$type->name))
-        @include('group.create.'.$type->name,['type'=>$type])
-        @else
-        @endif     
+        @include($type->view["create"]["path"],['type'=>$type])
     </div>
 </div>
 

@@ -21,7 +21,7 @@ class CreateInfoTable extends Migration
             $table->unique(['name','model']);
         });
 
-        Schema::create('info_bases', function (Blueprint $table) {
+        Schema::create('infos', function (Blueprint $table) {
             //
             $table->bigIncrements('id');
             $table->unsignedInteger('index');
@@ -30,23 +30,11 @@ class CreateInfoTable extends Migration
             $table->unique(['index','model_id','model_type']);
             $table->timestamps();
             $table->boolean('viewable')->default(true);
-            $table->string('edit');
             $table->string('name');
+            $table->text('info');
             //
             $table->foreign('info_template_id')->references('id')->on('info_templates');
         });
-
-        Schema::create('infos', function (Blueprint $table) {
-            //
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('info_base_id')->index();
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->timestamps();
-            $table->text('info');
-            //
-            $table->foreign('info_base_id')->references('id')->on('info_bases');
-        });        
     }
 
     /**
@@ -57,7 +45,6 @@ class CreateInfoTable extends Migration
     public function down()
     {
         Schema::dropIfExists('infos');
-        Schema::dropIfExists('info_bases');
         Schema::dropIfExists('info_templates');
     }
 }

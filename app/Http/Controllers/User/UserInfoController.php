@@ -9,30 +9,31 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 
 use App\Models\Info\Info;
-use App\Models\Info\InfoBase;
 
 class UserInfoController extends Controller
 {
-    //
-    public function edit(InfoBase $info_base)
+    /**
+     * 
+     */
+    public function getInfoView(int $index=0)
     {
-        return view('user.info.edit')->with([
-            'base'=>$info_base,
-            'info'=>$info_base->info(),
-            ]);
+        $user=Auth::user();
+        $info=$user->getInfoByIndex($index);
+        return response()->view($info->getTemplate()->view["show"]["path"], ['info'=>$info,"user"=>$user]);
     }
-
-    //
-    public function update(Request $request,InfoBase $info_base)
+    
+    /**
+     * 
+     */
+    public function edit(int $index)
     {
-        $validator = Validator::make($request->all(),[
-            
-        ]);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-        //
-        $info_base->updateInfo($request->toArray()['info']); 
-        return redirect()->route('user.show',$info_base->index);
+        $user=Auth::user();
+        $info=$user->getInfoByIndex($index);
+        return view('user.info.edit')->with([
+            "user"=>$user,
+            'info'=>$info,
+            "template"=>$info->getTemplate(),
+            'index'=>$index,
+            ]);
     }
 }

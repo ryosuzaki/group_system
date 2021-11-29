@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Info\InfoTemplate;
+use App\Models\Info\Info;
 
 use Illuminate\Support\Collection;
 
@@ -14,132 +15,106 @@ trait UseInfo
      * 
      */
     public function BeforeDeleteModelUsingInfo(){
-        foreach($this->infoBases()->get() as $base){
-            $this->deleteInfoBase($base->id);
+        foreach($this->infos()->get() as $info){
+            $this->deleteInfo($info->id);
         }
         return true;
+    }
+
+
+    public static function test_constructor(Info $info){
+        info($info);
     }
     /**
      * 
      */
-    public function createInfoBase($template){
+    public function createInfo($template){
         $template=InfoTemplate::findByIdOrName($template,$this);
+        //
         if($template->only_one&&$this->hasInfoBase($template)){
-            return new Exception("this info template must be only one in same model");
+            //return new Exception("this info template must be only one in same model");
+            return false;
         }else{
-            $base=$this->infoBases()->create([
-                'index'=>$this->calcInfoBaseIndex(),
+            //
+            $info=$this->infos()->create([
+                'index'=>$this->calcInfoIndex(),
                 'info_template_id'=>$template->id,
-                'name'=>$this->giveInfoBaseName($template),
-                'edit'=>$template->default_edit,
+                'name'=>$this->giveInfoName($template),
                 'viewable'=>$template->default_viewable,
-            ]);
-            $base->infos()->create([
                 'info'=>$template->default_info,
             ]);
-            return $base;
+            //
+            if(isset($template->constructor)){
+                $constructor=$template->constructor;
+                $func=array($constructor["class"],$constructor["function"]);
+                $func($info);
+            }
+            return $info;
         }
     }
     //
-    private function giveInfoBaseName($template){
-        if($this->hasInfoBase($template)){
-            return $template->default_name.'_'.$this->calcInfoBaseIndex();
+    private function giveInfoName($template){
+        if($this->hasInfo($template)){
+            return $template->default_name.'_'.$this->calcInfoIndex();
         }else{
             return $template->default_name;
         }
     }
     //
-    private function calcInfoBaseIndex(){
-        $indexes=$this->infoBases()->pluck('index');
+    private function calcInfoIndex(){
+        $indexes=$this->infos()->pluck('index');
         $diff=collect(range(0,config("group_system.role.max_num_of_info_bases")-1))->diff($indexes);
         if($diff->isNotEmpty()){
             return $diff->min();
         }
     }
     //
-    public function deleteInfoBase(int $base_id){
-        $base=$this->infoBases()->find($base_id);
-        $base->infos()->delete();
-        return $base->delete();
+    public function deleteInfo(int $id){
+        $info=$this->getInfo($id);
+        return $info->delete();
     }
     //
-    public function infoBases(){
-        return $this->morphMany('App\Models\Info\InfoBase','model');
+    public function infos(){
+        return $this->morphMany('App\Models\Info\Info','model');
     }
     //
     public function getTemplates(){
         return InfoTemplate::getByModel($this);
     }
     //
-    public function getInfoBase(int $id){
-        return $this->infoBases()->get()->find($id);
-    }
-    //
-    public function getInfoBaseByTemplate($template){
-        $template=InfoTemplate::findByIdOrName($template,$this);
-        return $this->infoBases()->where('info_template_id',$template->id)->first();
-    }
-    //
-    public function getInfoBases(){
-        return $this->infoBases()->get();
-    }
-    //
-    public function getInfoBasesByTemplate($template){
-        $template=InfoTemplate::findByIdOrName($template,$this);
-        return $this->infoBases()->where('info_template_id',$template->id)->get();
-    }
-    //
-    public function getInfoBaseByIndex(int $index){
-        return $this->infoBases()->where('index',$index)->first();
-    }
-    //
-    public function hasInfoBase($template){
-        $template=InfoTemplate::findByIdOrName($template,$this);
-        return $this->infoBases()->get()->contains('info_template_id',$template->id);
-    }
-
-
-    //
-    public function updateInfo(int $base_id,array $info){
-        return $this->infoBases()->find($base_id)->updateInfo($info);
-    }
-    //
-    public function infos(){
-        $infos=[];
-        foreach($this->infoBases()->get() as $base){
-            $infos[]=$base->info();
-        }
-        return collect($infos);
-    }
-    //
-    public function info(int $id){
-        return $this->getInfoBase($id)->info();
+    public function getInfo(int $id){
+        return $this->infos()->get()->find($id);
     }
     //
     public function getInfoByTemplate($template){
-        return $this->getInfoBaseByTemplate($template)->info();
+        $template=InfoTemplate::findByIdOrName($template,$this);
+        return $this->infos()->where('info_template_id',$template->id)->first();
+    }
+    //
+    public function getInfos(){
+        return $this->infos()->get();
+    }
+    //
+    public function getInfosByTemplate($template){
+        $template=InfoTemplate::findByIdOrName($template,$this);
+        return $this->infos()->where('info_template_id',$template->id)->get();
     }
     //
     public function getInfoByIndex(int $index){
-        return $this->getInfoBaseByIndex($index)->info();
+        return $this->infos()->where('index',$index)->first();
     }
     //
-    public function infoLogs(int $base_id){
-        return $this->infoBases()::find($base_id)->infos()->get();
+    public function hasInfo($template){
+        if(is_string($template)||is_int($template)){
+            $template=InfoTemplate::findByIdOrName($template,$this);
+        }
+        return $this->infos()->get()->contains('info_template_id',$template->id);
     }
-    //
-    public function infoAndBasePairs(){
-        return [
-            'bases'=>$this->infoBases()->get(),
-            'infos'=>$this->infos()->get(),
-        ];
-    }
-    //
-    public function infoAndBasePair(int $id){
-        $base=$this->getInfoBase($id);
-        return [
-            'base'=>$base,
-            'info'=>$base->info(),
-        ];
+
+    /**
+     * 
+     */
+    public function getViewableInfos(){
+        return $this->infos()->where('viewable',true)->get();
     }
 }

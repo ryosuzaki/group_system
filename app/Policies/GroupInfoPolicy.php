@@ -10,7 +10,7 @@ class GroupInfoPolicy
     //
     public function view(User $user, Group $group,int $index)
     {
-        if($group->getInfoBaseByIndex($index)->viewable){
+        if($group->getInfoByIndex($index)->viewable){
             return true;
         }
         $role=$user->getRoleByGroup($group->id);

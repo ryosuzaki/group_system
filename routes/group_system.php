@@ -4,34 +4,119 @@
 Route::name('user.')->prefix('user')->namespace('User')->middleware('auth')->group(function(){
     //
     Route::get('show/{index?}', 'UserController@show')->name('show');
-    Route::get('get_info/{index?}', 'UserController@getShowLayout')->name('get_info');
     Route::get('edit', 'UserController@edit')->name('edit');
     Route::put('update', 'UserController@update')->name('update');
 
     //
-    Route::get('{info_base}/info/edit', 'UserInfoController@edit')->name('info.edit');
-    Route::put('{info_base}/info', 'UserInfoController@update')->name('info.update');
+    Route::get('info/{info}/edit', 'UserInfoController@edit')->name('info.edit');
+    Route::get('get_info/{index?}', 'UserInfoController@getInfoView')->name('get_info');
+    //Route::put('{info}/info', 'UserInfoController@update')->name('info.update');
 
    
     //
-    Route::get('group', 'UserGroupController@index')->name('group.index');
-    Route::get('group/create', 'UserGroupController@create')->name('group.create');
-    Route::post('group', 'UserGroupController@store')->name('group.store');
-    Route::get('group/{group}/edit', 'UserGroupController@edit')->name('group.edit');
-    Route::put('group/{group}', 'UserGroupController@update')->name('group.update');
-    Route::delete('group/{group}', 'UserGroupController@destroy')->name('group.destroy');
-    //
-    Route::get('group/{group}/accept_join_request', 'UserGroupController@acceptJoinRequest')->name('group.accept_join_request');
-    Route::get('group/{group}/denied_join_request', 'UserGroupController@deniedJoinRequest')->name('group.denied_join_request');
+    Route::name('group.')->prefix('group')->group(function(){
+        Route::get('', 'UserGroupController@index')->name('index');
+        //Route::get('create', 'UserGroupController@create')->name('create');
+        //Route::post('', 'UserGroupController@store')->name('store');
+        Route::prefix('{group}')->group(function(){
+            //Route::get('/edit', 'UserGroupController@edit')->name('edit');
+            //Route::put('', 'UserGroupController@update')->name('update');
+            Route::delete('', 'UserGroupController@destroy')->name('destroy');
+            //
+            Route::get('/accept_join_request', 'UserGroupController@acceptJoinRequest')->name('accept_join_request');
+            Route::get('/denied_join_request', 'UserGroupController@deniedJoinRequest')->name('denied_join_request');
+        });
+    });
 
     //
-    Route::get('info_base', 'UserInfoBaseController@index')->name('info_base.index');
-    Route::get('info_base/create', 'UserInfoBaseController@create')->name('info_base.create');
-    Route::post('info_base', 'UserInfoBaseController@store')->name('info_base.store');
-    Route::get('info_base/{info_base}/edit', 'UserInfoBaseController@edit')->name('info_base.edit');
-    Route::put('info_base/{info_base}', 'UserInfoBaseController@update')->name('info_base.update');
-    Route::delete('info_base/{info_base}', 'UserInfoBaseController@destroy')->name('info_base.destroy');
+    Route::name('infos.')->prefix('infos')->group(function(){
+        Route::get('', 'UserInfosController@index')->name('index');
+        Route::get('create', 'UserInfosController@create')->name('create');
+        Route::post('', 'UserInfosController@store')->name('store');
+        Route::prefix('{info}')->group(function(){
+            Route::get('edit', 'UserInfosController@edit')->name('edit');
+            Route::put('', 'UserInfosController@update')->name('update');
+            Route::delete('', 'UserInfosController@destroy')->name('destroy');
+        });
+    });
 });
+
+
+
+//
+Route::name('group.')->prefix('group')->namespace('Group')->middleware('auth')->group(function(){
+    //
+    Route::get('{type}', 'GroupController@index')->name('index');
+    Route::get('create/{type}', 'GroupController@create')->name('create');
+    Route::post('store/{type}', 'GroupController@store')->name('store');
+    //Route::post('store_with_location/{type}', 'GroupController@storeWithLocation')->name('store_with_location');
+
+    //
+    Route::prefix('{group}')->group(function(){
+        //
+        Route::get('show/{index?}', 'GroupController@show')->name('show');
+        Route::get('edit', 'GroupController@edit')->name('edit');
+        Route::put('', 'GroupController@update')->name('update');
+        Route::delete('', 'GroupController@destroy')->name('destroy');
+        //
+        Route::name('user.')->prefix('user')->group(function(){
+            Route::get('{index?}', 'GroupUserController@index')->name('index');
+            Route::get('create/{index}', 'GroupUserController@create')->name('create');
+            Route::post('{index}', 'GroupUserController@store')->name('store');
+            Route::get('{index}/show/{user}', 'GroupUserController@show')->name('show');
+            Route::delete('{index}/{user}', 'GroupUserController@destroy')->name('destroy');
+            //
+            Route::post('{index}/store_by_csv', 'GroupUserController@storeByCsv')->name('store_by_csv');
+            Route::get('{index}/quit_request_join/{user}', 'GroupUserController@quitRequestJoin')->name('quit_request_join');
+        });
+        
+
+        //
+        Route::get('info/{index}/edit', 'GroupInfoController@edit')->name('info.edit');
+        Route::get('get_info/{index?}', 'GroupInfoController@getInfoView')->name('get_info');
+
+        //
+        Route::name('role.')->prefix('role')->group(function(){
+            Route::get('', 'GroupRoleController@index')->name('index');
+            Route::get('create', 'GroupRoleController@create')->name('create');
+            Route::post('', 'GroupRoleController@store')->name('store');
+            Route::get('{index}/edit', 'GroupRoleController@edit')->name('edit');
+            Route::put('{index}', 'GroupRoleController@update')->name('update');
+            Route::delete('{index}', 'GroupRoleController@destroy')->name('destroy');
+            Route::get('{index}/edit_permissions', 'GroupRoleController@editPermissions')->name('edit_permissions');
+            Route::put('{index}/update_permissions', 'GroupRoleController@updatePermissions')->name('update_permissions');
+        });
+        
+        //
+        Route::name('infos.')->prefix('infos')->group(function(){
+            Route::get('', 'GroupInfosController@index')->name('index');
+            Route::get('create', 'GroupInfosController@create')->name('create');
+            Route::post('', 'GroupInfosController@store')->name('store');
+            Route::get('{info}/edit', 'GroupInfosController@edit')->name('edit');
+            Route::put('{info}', 'GroupInfosController@update')->name('update');
+            Route::delete('{info}', 'GroupInfosController@destroy')->name('destroy');
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
 
 //
 Route::name('user.')->prefix('user')->namespace('User/Components')->middleware('auth')->group(function(){
@@ -51,13 +136,16 @@ Route::name('user.')->prefix('user')->namespace('User/Components')->middleware('
     Route::resource('setting', 'SettingController');
 });
 
+
+
+
+
+
+
+
+
 //
 Route::name('group.')->prefix('group')->namespace('Group')->middleware('auth')->group(function(){
-    //
-    Route::get('create/{type}', 'GroupController@create')->name('create');
-    Route::post('store/{type}', 'GroupController@store')->name('store');
-    Route::post('store_with_location/{type}', 'GroupController@storeWithLocation')->name('store_with_location');
-
     //
     Route::namespace('Components')->group(function(){
         Route::get('location/index/{group_types}', 'LocationController@index')->name('location.index');
@@ -66,23 +154,6 @@ Route::name('group.')->prefix('group')->namespace('Group')->middleware('auth')->
 
     //
     Route::prefix('{group}')->group(function(){
-        //
-        Route::get('show/{index?}', 'GroupController@show')->name('show');
-        Route::get('get_info/{index?}', 'GroupController@getInfo')->name('get_info');
-        //
-        Route::get('user/index/{index?}', 'GroupUserController@index')->name('user.index');
-        Route::get('user/create/{index}', 'GroupUserController@create')->name('user.create');
-        Route::post('user/{index}', 'GroupUserController@store')->name('user.store');
-        Route::get('user/{user}/show/{index}', 'GroupUserController@show')->name('user.show');
-        Route::delete('user/{user}/{index}', 'GroupUserController@destroy')->name('user.destroy');
-        //
-        Route::post('user/{index}/store_by_csv', 'GroupUserController@storeByCsv')->name('user.store_by_csv');
-        Route::get('user/{user}/quit_request_join/{index}', 'GroupUserController@quitRequestJoin')->name('user.quit_request_join');
-
-        //
-        Route::get('info/{index}/edit', 'GroupInfoController@edit')->name('info.edit');
-        Route::put('info/{index}', 'GroupInfoController@update')->name('info.update');
-
         //
         Route::namespace('Components')->group(function(){
             //
@@ -109,16 +180,8 @@ Route::name('group.')->prefix('group')->namespace('Group')->middleware('auth')->
             Route::get('user/{user}/unrescue', 'RescueController@unrescue')->name('user.unrescue');
             Route::get('user/{user}/rescued', 'RescueController@rescued')->name('user.rescued');
             Route::get('user/{user}/reverse_rescue', 'RescueController@reverseRescue')->name('user.reverse_rescue');
-            //
-            Route::get('permission/{index}/edit', 'PermissionController@edit')->name('permission.edit');
-            Route::put('permission/{index}', 'PermissionController@update')->name('permission.update');
+            
         });
     });
-});
 
-//
-Route::resource('group', 'Group\GroupController',['except' => ['create','show','store']]);
-//
-Route::resource('group.role', 'Group\Components\RoleController');
-//
-Route::resource('group.info_base', 'Group\GroupInfoBaseController');
+});

@@ -80,19 +80,19 @@ class GroupUserController extends Controller
     }
 
     //
-    public function show(Group $group,int $user_id,int $index)
+    public function show(Group $group,int $index,int $user_id)
     {
         Gate::authorize('view-group-users',[$group,$index]);
         return view('group.user.show')->with([
             'group'=>$group,
             'index'=>$index,
             'user'=>$group->getUser($user_id),
-            'bases'=>$group->getUserInfoBases($user_id),
+            'info'=>$group->getUserInfos($user_id),
             ]);
     }
 
     //
-    public function destroy(Group $group,int $user_id,int $index)
+    public function destroy(Group $group,int $index,int $user_id)
     {
         Gate::authorize('remove-group-users',[$group,$index]);
         $group->removeUser($user_id);
@@ -100,7 +100,7 @@ class GroupUserController extends Controller
     }
 
     //
-    public function quitRequestJoin(Group $group,int $user_id,int $index){
+    public function quitRequestJoin(Group $group,int $index,int $user_id){
         Gate::authorize('invite-group-users',[$group,$index]);
         $group->quitRequestJoin($user_id);
         return redirect()->route('group.user.index',[$group->id,$index]);

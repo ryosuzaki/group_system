@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Group\Components;
+namespace App\Http\Controllers\Group;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,13 +12,13 @@ use Illuminate\Support\Facades\Gate;
 
 use Validator;
 
-class RoleController extends Controller
+class GroupRoleController extends Controller
 {
     //
     public function index(Group $group)
     {
         Gate::authorize('viewAny-group-roles',$group);
-        return view('group.components.role.index')->with([
+        return view('group.role.index')->with([
             'group'=>$group,
             'roles'=>$group->roles()->get(),
         ]);
@@ -33,7 +33,7 @@ class RoleController extends Controller
     public function create(Group $group)
     {
         Gate::authorize('create-group-roles',$group);
-        return view('group.components.role.create')->with([
+        return view('group.role.create')->with([
             'group'=>$group,
             'roles'=>$group->roles()->get(),
             ]);
@@ -65,7 +65,7 @@ class RoleController extends Controller
     public function edit(Group $group,int $index)
     {
         Gate::authorize('update-group-roles',[$group,$index]);
-        return view('group.components.role.edit')->with([
+        return view('group.role.edit')->with([
             'group'=>$group,
             'role'=>$group->getRoleByIndex($index),
             ]);
@@ -113,5 +113,35 @@ class RoleController extends Controller
         Gate::authorize('delete-group-roles',$group);
         $group->deleteRoleByIndex($index);
         return redirect()->back();
+    }
+
+    //
+    public function editPermissions(Group $group,int $index)
+    {
+        Gate::authorize('permission-group-users',[$group,$index]);
+        $role=$group->getRoleByIndex($index);
+        return view('group.role.edit_permissions')->with([
+            'group'=>$group,
+            'type'=>$group->getType(),
+            'role'=>$role,
+            'permission_names'=>$role->permissions()->pluck('name'),
+            ]);
+    }
+
+    //
+    public function updatePermissions(Request $request,Group $group,int $index)
+    {
+        Gate::authorize('permission-group-users',[$group,$index]);
+        $validator = Validator::make($request->all(),[
+            'permissions.*'=>'required|string',
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        //
+        $role=$group->getRoleByIndex($index);
+        //
+        $role->syncPermissions((array)$request->permissions);
+        return redirect()->route('group.role.index',$group->id);
     }
 }

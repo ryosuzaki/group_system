@@ -109,12 +109,12 @@
         </div>
   
         <div class="collapse navbar-collapse">
-          <ul class="navbar-nav mr-auto">
+          <!--<ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{{route('group.map.shelter_and_danger_spot')}}"><i class="material-icons">run_circle</i>災害時マップ</a>
+              <a class="nav-link" href=""><i class="material-icons">run_circle</i>災害時マップ</a>
             </li>
-          </ul>
-          <ul class="navbar-nav">
+          </ul>-->
+          <ul class="navbar-nav mr-auto">
           @guest
               <li class="nav-item">
                   <a class="nav-link" href="{{ route('login') }}"><i class="material-icons">login</i>ログイン</a>
@@ -158,10 +158,10 @@
               </a>
 
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{{ route('user.announcement.index') }}">
+                  <!--<a class="dropdown-item" href="">
                       お知らせ
                       @if($unread>0)<span class="ml-2 badge badge-pill badge-danger">{{$unread}}</span>@endif
-                  </a>
+                  </a>-->
                   <a class="dropdown-item" href="{{ route('user.group.index') }}">
                       参加リクエスト
                       @if($request>0)<span class="ml-2 badge badge-pill badge-danger">{{$request}}</span>@endif
@@ -199,7 +199,7 @@
         &copy;
         <script>
             document.write(new Date().getFullYear())
-        </script>, made with <i class="material-icons">favorite</i> by
+        </script>, made with by
         <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a> for a better web.
     </div>
   </div>
