@@ -10,12 +10,6 @@ use App\Models\Group\GroupType;
 use App\Traits\UseInfo;
 use App\Traits\UseRoleInModel;
 
-use App\Traits\UploadImg;
-use App\Traits\SendAnnouncement;
-use App\Traits\UseLocation;
-
-use Illuminate\Http\UploadedFile;
-
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -29,11 +23,6 @@ class Group extends Model
         UseInfo::getViewableInfos as trait_getViewableInfos;
     }
     use UseRoleInModel;
-    use UploadImg{
-        uploadImg::uploadImg as trait_uploadImg;
-    }
-    use SendAnnouncement;
-    use UseLocation;
 
     //
     protected $guarded = ['id'];
@@ -142,10 +131,10 @@ class Group extends Model
      * 
      */
     public function getUserInfos(int $user_id){
-        return $this->getUser($user_id)->infos()->whereIn('info_template_id',$this->getType()->available_user_info)->get();
+        return $this->getUser($user_id)->infos()->whereIn('info_template_id',$this->getType()->viewable_user_info)->get();
     }
     public function getUserInfo(int $user_id,int $template_id){
-        if(collect($this->getType()->available_user_info)->contain($template_id)){
+        if(collect($this->getType()->viewable_user_info)->contain($template_id)){
             return $this->getUser($user_id)->getInfoByTemplate($template_id);
         }
     }
@@ -176,11 +165,4 @@ class Group extends Model
         }
         return $return;
     }
-
-    /**
-     * 
-     */
-    public function uploadImg(UploadedFile $img){
-        return $this->trait_uploadImg($img,$this->unique_name);
-    }    
 }

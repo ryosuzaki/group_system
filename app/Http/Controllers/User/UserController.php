@@ -27,6 +27,16 @@ class UserController extends Controller
             'index'=>$index,
             ]);
     }
+
+    /**
+     * 
+     */
+    public function getInfo(int $index=0)
+    {
+        $user=Auth::user();
+        $info=$user->getInfoByIndex($index);
+        return response()->view($info->getTemplate()->view["show"]["path"], ['info'=>$info,"user"=>$user]);
+    }
     
     /**
      * 

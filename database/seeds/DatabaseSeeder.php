@@ -13,9 +13,10 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         $this->call([
-            GroupTableSeeder::class,
-            InfoTableSeeder::class,
-            PermissionTableSeeder::class,
+            SetUpGroupSystemSeeder::class,
+            //GroupTableSeeder::class,
+            //InfoTableSeeder::class,
+            //PermissionTableSeeder::class,
             TestSeeder::class,
             //MapSeeder::class,
             ]);

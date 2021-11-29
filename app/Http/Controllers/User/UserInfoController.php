@@ -11,17 +11,7 @@ use Validator;
 use App\Models\Info\Info;
 
 class UserInfoController extends Controller
-{
-    /**
-     * 
-     */
-    public function getInfoView(int $index=0)
-    {
-        $user=Auth::user();
-        $info=$user->getInfoByIndex($index);
-        return response()->view($info->getTemplate()->view["show"]["path"], ['info'=>$info,"user"=>$user]);
-    }
-    
+{    
     /**
      * 
      */

@@ -4,13 +4,14 @@
 Route::name('user.')->prefix('user')->namespace('User')->middleware('auth')->group(function(){
     //
     Route::get('show/{index?}', 'UserController@show')->name('show');
+    Route::get('get_info/{index?}', 'UserController@getInfo')->name('get_info');
     Route::get('edit', 'UserController@edit')->name('edit');
     Route::put('update', 'UserController@update')->name('update');
 
     //
-    Route::get('info/{info}/edit', 'UserInfoController@edit')->name('info.edit');
-    Route::get('get_info/{index?}', 'UserInfoController@getInfoView')->name('get_info');
-    //Route::put('{info}/info', 'UserInfoController@update')->name('info.update');
+    Route::name('info.')->prefix('info')->group(function(){
+        Route::get('{info}/edit', 'UserInfoController@edit')->name('edit');
+    });
 
    
     //
@@ -55,6 +56,7 @@ Route::name('group.')->prefix('group')->namespace('Group')->middleware('auth')->
     Route::prefix('{group}')->group(function(){
         //
         Route::get('show/{index?}', 'GroupController@show')->name('show');
+        Route::get('get_info/{index?}', 'GroupController@getInfo')->name('get_info');
         Route::get('edit', 'GroupController@edit')->name('edit');
         Route::put('', 'GroupController@update')->name('update');
         Route::delete('', 'GroupController@destroy')->name('destroy');
@@ -72,8 +74,10 @@ Route::name('group.')->prefix('group')->namespace('Group')->middleware('auth')->
         
 
         //
-        Route::get('info/{index}/edit', 'GroupInfoController@edit')->name('info.edit');
-        Route::get('get_info/{index?}', 'GroupInfoController@getInfoView')->name('get_info');
+        Route::name('info.')->prefix('info')->group(function(){
+            Route::get('{index}/edit', 'GroupInfoController@edit')->name('edit');
+        });
+        
 
         //
         Route::name('role.')->prefix('role')->group(function(){

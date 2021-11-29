@@ -83,6 +83,16 @@ class GroupController extends Controller
             ]);
     }
 
+    /**
+     * 
+     */
+    public function getInfo(Group $group,int $index=0)
+    {
+        Gate::authorize('view-group-info',[$group,$index]);
+        $info=$group->getInfoByIndex($index);
+        return response()->view($info->getTemplate()->view["show"]["path"], ['info'=>$info,'group'=>$group]);
+    }
+
     
 
     /**

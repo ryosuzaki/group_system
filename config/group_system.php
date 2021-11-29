@@ -16,7 +16,7 @@ return [
             //初期にセットする情報　InfoTemplateのnameかidで指定
             "initial_info"=>[],
             //利用できるユーザの情報　InfoTemplateのnameかidで指定
-            "available_user_info"=>[],
+            "viewable_user_info"=>[],
             //最初に作られるadminの設定
             "admin"=>[
                 "name"=>"管理者",
@@ -39,8 +39,10 @@ return [
             "name"=> "サンプル",
             //初期にセットする情報　InfoTemplateのnameかidで指定
             "initial_info"=>[],
+            //
+            "undeletable_info"=>[],
             //利用できるユーザの情報　InfoTemplateのnameかidで指定
-            "available_user_info"=>[],
+            "viewable_user_info"=>[],
             //最初に作られるadminの設定
             "admin"=>[
                 "name"=>"管理者",
@@ -71,7 +73,6 @@ return [
      */
     'role'=>[
         'namespace'=>'App\Models\Components\Role',
-        'class'=>App\Models\Components\Role::class,
         
         'group'=>['update','delete'],
         'group_infos'=>['viewAny','create','update','delete'],
@@ -79,7 +80,7 @@ return [
         'group_roles'=>['viewAny','create','update','delete'],
         'group_users'=>['permission','view','invite','remove'],
 
-        'max_num_of_info_bases'=>10,
+        'max_num_of_infos'=>10,
         'max_num_of_roles'=>10,
     ],
 
@@ -146,13 +147,6 @@ return [
         ],
     ],
 
-    //
-    'extra_group'=>[
-        'good'=>'いいね',
-        'check'=>'チェック',
-    ],
-    'good'=>'いいね',
-    'check'=>'チェック',
 
     //
     'announcement'=>[

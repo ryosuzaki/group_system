@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Group\Group;
-use App\Models\Components\Role;
+use App\Models\Role\Role;
 
 use Illuminate\Support\Facades\Gate;
 
@@ -25,10 +25,7 @@ class GroupRoleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @param Group $group
-     * @return \Illuminate\Http\Response
+     * 
      */
     public function create(Group $group)
     {
@@ -40,11 +37,7 @@ class GroupRoleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param Group $group
-     * @return \Illuminate\Http\Response
+     * 
      */
     public function store(Request $request,Group $group)
     {
@@ -72,11 +65,7 @@ class GroupRoleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 
      */
     public function update(Request $request,Group $group,int $index)
     {
@@ -103,10 +92,7 @@ class GroupRoleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 
      */
     public function destroy(Group $group,int $index)
     {

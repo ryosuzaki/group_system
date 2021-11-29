@@ -16,15 +16,6 @@ use App\Models\Group\Group;
 
 class GroupInfoController extends Controller
 {
-    /**
-     * 
-     */
-    public function getInfoView(Group $group,int $index=0)
-    {
-        Gate::authorize('view-group-info',[$group,$index]);
-        $info=$group->getInfoByIndex($index);
-        return response()->view($info->getTemplate()->view["show"]["path"], ['info'=>$info,'group'=>$group]);
-    }
     //
     public function edit(Group $group,int $index)
     {

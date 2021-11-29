@@ -82,6 +82,10 @@ trait UseInfo
         return InfoTemplate::getByModel($this);
     }
     //
+    public function getTemplate($template){
+        return InfoTemplate::findByIdOrName($template,$this);
+    }
+    //
     public function getInfo(int $id){
         return $this->infos()->get()->find($id);
     }
