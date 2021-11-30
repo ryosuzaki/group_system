@@ -6,7 +6,7 @@
 
 ### 2. composer install
 
-### 3. .env copyを.envに変更
+### 3. .env copyを複製して名前を.envに変更
 
 ### 4. apache、mysqlを起動
 
