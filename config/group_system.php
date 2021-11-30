@@ -9,31 +9,6 @@ return [
      * 
      */
     'group_types'=>[
-        /*
-        "type_name"=>[
-            //表示名
-            "name"=> "name",
-            //初期にセットする情報　InfoTemplateのnameかidで指定
-            "initial_info"=>[],
-            //利用できるユーザの情報　InfoTemplateのnameかidで指定
-            "viewable_user_info"=>[],
-            //最初に作られるadminの設定
-            "admin"=>[
-                "name"=>"管理者",
-            ],
-            //権限の設定
-            "permission"=>[
-                //info_basesの操作の可否
-                'group_info_bases'=>true,
-                //rolesの操作の可否
-                'group_roles'=>true,
-            ],
-            //
-            "available_index_view"=>true,
-            //
-            "available_create_view"=>true,
-        ]
-        */
         "sample"=>[
             //表示名
             "name"=> "サンプル",
@@ -145,20 +120,5 @@ return [
                 ],
             ],
         ],
-    ],
-
-
-    //
-    'announcement'=>[
-        'table'=>[
-            'announcement'=>'announcement',
-            'announcement_user'=>'announcement_user',
-        ]
-    ],
-
-
-    'danger_spot'=>[
-        'name'=>"危険地点",
-        'spot_names'=>['土砂崩れ','水没','倒壊','火災','その他'],
     ],
 ];

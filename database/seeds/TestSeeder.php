@@ -16,8 +16,8 @@ class TestSeeder extends Seeder
      */
     public function run()
     {
-        $user=User::setUp('aaa','cars1201023@gn.iwasaki.ac.jp','aaaa');
-        $user1=User::setUp('bbb','ryo.yakizakana12@gmail.com','aaaa');
+        $user=User::setUp('aaa','a@a','aaaa');
+        $user1=User::setUp('bbb','b@b','bbbb');
 
         /*
         $spot1=Group::setUp($user->id,'土砂崩れ',GroupType::findByName('danger_spot'),"aaaa");
