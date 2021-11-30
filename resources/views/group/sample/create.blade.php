@@ -11,7 +11,7 @@
     </div>
 
     <div class="form-group">
-        <label for="password">パスワード</label>
+        <label for="password">管理者パスワード</label>
             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
             @error('password')
                 <span class="invalid-feedback" role="alert">
@@ -21,13 +21,13 @@
     </div>
 
     <div class="form-group">
-        <label for="password-confirm">パスワードを再入力</label>
+        <label for="password-confirm">管理者パスワードを再入力</label>
         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
     </div>   
 
     <div class="form-group mb-0">
         <button type="submit" class="btn btn-primary btn-block">
-        登録
+        作成
         </button>
     </div>
 </form>             

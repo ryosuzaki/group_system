@@ -72,6 +72,13 @@ class Info extends Model
     }
 
     //
+    public function setViewable(bool $viewable){
+        return $this->fill([
+            
+        ])->save();
+    }
+
+    //
     public function getTemplateConfig(){
         return $this->getTemplate()->config;
     }

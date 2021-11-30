@@ -29,7 +29,7 @@ Breadcrumbs::for('group.show', function ($trail,Group $group) {
 //
 Breadcrumbs::for('group.create', function ($trail,GroupType $type) {
     $trail->parent('home.group_type',$type);
-    $trail->push('登録', route('group.create',$type));
+    $trail->push('作成', route('group.create',$type));
 });
 //
 Breadcrumbs::for('group.edit', function ($trail,Group $group) {

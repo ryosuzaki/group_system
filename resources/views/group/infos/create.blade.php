@@ -4,12 +4,12 @@
 
 
 <div class="card">
-{{ Breadcrumbs::render('group.info_base.create',$group) }}
+{{ Breadcrumbs::render('group.infos.create',$group) }}
     <div class="card-body">
         <h3 class="text-center mb-4">追加</h3>
 
 
-        <form method="POST" action="{{ route('group.info_base.store',$group->id) }}">
+        <form method="POST" action="{{ route('group.infos.store',$group->id) }}">
             @csrf
 
             @foreach($templates as $template)

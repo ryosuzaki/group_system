@@ -51,7 +51,7 @@ class GroupInfosController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         foreach((array)$request->templates as $template){
-            $group->createInfo($template);
+            $group->createInfo((int)$template);
         }
         return redirect()->route('group.show',$group->id);
     }
@@ -79,9 +79,7 @@ class GroupInfosController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         $info=$group->getInfoByIndex($index);
-        $info->fill([
-            'viewable'=>(bool)$request->viewable,
-        ])->save();
+        $info->setViewable((bool)$request->viewable);
         return redirect()->route('group.infos.index',$group->id);
     }
 

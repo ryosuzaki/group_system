@@ -16,6 +16,7 @@
         </div>
     </div>
 
+    <!--config/group_system.types.view.show.pathのviewがはめ込まれる-->
     @if(isset($type->view["show"]["path"]))
     @include($type->view["show"]["path"], ['group'=>$group,'infos'=>$infos])
     @else
@@ -24,7 +25,7 @@
 
     @can('update',$group)
     <div class="row">
-        <a class="btn btn-primary btn-block" href="{{route('group.edit',[$group->id])}}">変更/削除</a>
+        <a class="btn btn-primary btn-block" href="{{route('group.edit',[$group->id])}}"><i class="material-icons">settings</i> 変更</a>
     </div>
     @endcan
 
