@@ -68,9 +68,7 @@ class UserInfosController extends Controller
         }
         $user=Auth::user();
         $info=$user->getInfoByIndex($index);
-        $info->fill([
-            'viewable'=>(bool)$request->viewable,
-        ])->save();
+        $info->setViewable((bool)$request->viewable);
         return redirect()->route('user.infos.index',$user->id);
     }
 

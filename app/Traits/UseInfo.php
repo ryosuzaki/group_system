@@ -39,7 +39,7 @@ trait UseInfo
             $info=$this->infos()->create([
                 'index'=>$this->calcInfoIndex(),
                 'info_template_id'=>$template->id,
-                'name'=>$this->giveInfoName($template),
+                'name'=>$template->default_name,
                 'viewable'=>$template->default_viewable,
                 'info'=>$template->default_info,
             ]);
@@ -50,14 +50,6 @@ trait UseInfo
                 $func($info);
             }
             return $info;
-        }
-    }
-    //
-    private function giveInfoName($template){
-        if($this->hasInfo($template)){
-            return $template->default_name.'_'.$this->calcInfoIndex();
-        }else{
-            return $template->default_name;
         }
     }
     //

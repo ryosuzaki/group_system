@@ -73,12 +73,14 @@ class GroupInfosController extends Controller
     {
         Gate::authorize('update-group-infos',$group);
         $validator = Validator::make($request->all(),[
+            'name'=>'required|max:255',
             'viewable'=>'required|boolean',
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
         $info=$group->getInfoByIndex($index);
+        $info->setName($request->name);
         $info->setViewable((bool)$request->viewable);
         return redirect()->route('group.infos.index',$group->id);
     }

@@ -67,14 +67,16 @@ class Info extends Model
         return $this->updateInfo($info);
     }
     //
-    public function changeName(string $name){
-        return $this->fill(['name'=>$name])->save();
+    public function setName(string $name){
+        return $this->fill([
+            'name'=>$name,
+            ])->save();
     }
 
     //
     public function setViewable(bool $viewable){
         return $this->fill([
-            
+            'viewable'=>$viewable,
         ])->save();
     }
 

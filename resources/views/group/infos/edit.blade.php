@@ -12,6 +12,17 @@
         <form method="POST" action="{{route('group.infos.update',[$group->id,$info->index])}}">
             @csrf
             {{ method_field('PUT') }}
+
+            <div class="form-group">
+                <label for="name">名前</label>
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{$info->name}}" required autofocus>
+                @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
             <div class="form-check">
                 <label class="form-check-label">
                     <input type="hidden" name="viewable" value="0">
