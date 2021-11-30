@@ -130,13 +130,33 @@ class Group extends Model
     /**
      * 
      */
-    public function getUserInfos(int $user_id){
-        return $this->getUser($user_id)->infos()->whereIn('info_template_id',$this->getType()->viewable_user_info)->get();
-    }
-    public function getUserInfo(int $user_id,int $template_id){
-        if(collect($this->getType()->viewable_user_info)->contain($template_id)){
-            return $this->getUser($user_id)->getInfoByTemplate($template_id);
+    public function getViewableUserInfos($user){
+        $infos=[];
+        foreach ($this->getType()->viewable_user_infos as $info){
+            $infos[]=$this->getUserInfo($user,$info);
         }
+        return $infos;
+    }
+    
+    /**
+     * 
+     */
+    public function getViewableUserInfo($user,$template){
+        $user=$this->getUserWithPivot($user);
+        $template=$user->getTemplate($template);
+        foreach($this->getViewableUserInfos($user) as $info){
+            if($info->getTemplate()->id==$template->id){
+                return $info;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     */
+    public function getUserInfo($user,$template){
+        return $this->getUserWithPivot($user)->getInfoByTemplate($template);
     }
 
     /**

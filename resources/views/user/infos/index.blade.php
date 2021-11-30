@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">やめる</button>
-                                            <form action="{{route('user.infos.destroy',[$info->id])}}" method="post">
+                                            <form action="{{route('user.infos.destroy',[$info->index])}}" method="post">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="btn btn-danger text-white">削除する</button>

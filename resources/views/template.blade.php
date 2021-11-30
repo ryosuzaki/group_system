@@ -90,9 +90,8 @@
           <div>
           @auth
           @php
-          $unread=Auth::user()->countUnreadAnnouncements();
           $request=Auth::user()->countGroupsRequestJoin();
-          $total=$unread+$request;
+          $total=$request;
           @endphp
           @if($total>0)
           <span class="d-inline-block d-lg-none d-xs-none badge badge-pill badge-danger hamburger-menu-badge">{{$total}}</span>
@@ -158,10 +157,6 @@
               </a>
 
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <!--<a class="dropdown-item" href="">
-                      お知らせ
-                      @if($unread>0)<span class="ml-2 badge badge-pill badge-danger">{{$unread}}</span>@endif
-                  </a>-->
                   <a class="dropdown-item" href="{{ route('user.group.index') }}">
                       参加リクエスト
                       @if($request>0)<span class="ml-2 badge badge-pill badge-danger">{{$request}}</span>@endif

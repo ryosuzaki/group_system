@@ -9,7 +9,6 @@ use App\Models\Group\Group;
 use App\Models\Group\GroupType;
 
 use App\Traits\UseInfo;
-use App\Traits\RecieveAnnouncement;
 use App\Traits\UseRoleInUser;
 
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,6 @@ class User extends Authenticatable
     use HasRoles;
     use UseInfo;
     use UseRoleInUser;
-    use RecieveAnnouncement;
 
     //
     protected $guarded=["id"];

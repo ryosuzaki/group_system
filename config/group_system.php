@@ -42,7 +42,7 @@ return [
             //
             "undeletable_info"=>[],
             //利用できるユーザの情報　InfoTemplateのnameかidで指定
-            "viewable_user_info"=>[],
+            "viewable_user_infos"=>[],
             //最初に作られるadminの設定
             "admin"=>[
                 "name"=>"管理者",
@@ -72,7 +72,7 @@ return [
      * 
      */
     'role'=>[
-        'namespace'=>'App\Models\Components\Role',
+        'namespace'=>'App\Models\Role\Role',
         
         'group'=>['update','delete'],
         'group_infos'=>['viewAny','create','update','delete'],

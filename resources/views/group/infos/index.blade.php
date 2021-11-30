@@ -25,7 +25,7 @@
                         <td><a href="{{route('info_template.show',$info->getTemplate()->id)}}">{{$info->name}}</a></td>
                         <td>@if($info->viewable)一般公開@else権限を持つユーザーのみ@endif</td>                              
                         <td>
-                        <a class="btn btn-primary btn-sm btn-round m-0 text-white" href="{{route('group.infos.edit',[$group->id,$info->id])}}"><i class="material-icons">edit</i> 変更</a>
+                        <a class="btn btn-primary btn-sm btn-round m-0 text-white" href="{{route('group.infos.edit',[$group->id,$info->index])}}"><i class="material-icons">edit</i> 変更</a>
                             <button type="button" data-toggle="modal" data-target="#delete{{$info->id}}". class="btn btn-danger btn-round btn-sm m-0 text-white"><i class="material-icons">remove_circle_outline</i> 削除</button>
                             <div class="modal fade" id="delete{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -36,7 +36,7 @@
 
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">やめる</button>
-                                            <form action="{{route('group.infos.destroy',[$group,$info->id])}}" method="post">
+                                            <form action="{{route('group.infos.destroy',[$group,$info->index])}}" method="post">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="btn btn-danger text-white">削除する</button>

@@ -67,11 +67,11 @@
                                     
                                     @foreach ($users as $user)
                                     <tr>
-                                        <td><a href="{{route('group.user.show',[$group->id,$user->id,$role->index])}}">{{$user->name}}</a></td>
+                                        <td><a href="{{route('group.user.show',[$group->id,$role->index,$user->id])}}">{{$user->name}}</a></td>
                                         <td>{{$user->email}}</td>
                                         <td class="row pt-1">
                                         @if($role->index!=0)
-                                        <form action="{{route('group.user.destroy',[$group->id,$user->id,$role->index])}}" method="post">
+                                        <form action="{{route('group.user.destroy',[$group->id,$role->index,$user->id])}}" method="post">
                                             @csrf
                                             @method('delete')
                                             <button type="button" data-toggle="modal" data-target="#delete{{$user->id}}" class="btn btn-danger btn-round btn-sm text-white m-0"><i class="material-icons">logout</i> 退出</button>
@@ -109,7 +109,7 @@
 
                     <div class="tab-pane" id="request_join" aria-expanded="false">
                         @php
-                        $requests=$group->usersRequestJoin()->wherePivot('role_id',$role->id)->get();
+                        $requests=$group->getUsersRequestJoinInRole($role);
                         @endphp
                         <div class="table-responsive">
                             <table class="table text-nowrap">
@@ -125,7 +125,7 @@
                                     <tr>
                                         <td>{{$user->email}}</td>
                                         <td class="row pt-1">
-                                        <a class="btn btn-danger btn-round btn-sm text-white" href="{{route('group.user.quit_request_join',[$group->id,$user->id,$role->index])}}"><i class="material-icons">close</i> 招待をやめる</a>
+                                        <a class="btn btn-danger btn-round btn-sm text-white" href="{{route('group.user.quit_request_join',[$group->id,$role->index,$user->id])}}"><i class="material-icons">close</i> 招待をやめる</a>
                                     </tr>
                                     @endforeach
                                 </tbody>

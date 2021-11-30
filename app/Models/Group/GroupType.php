@@ -55,8 +55,8 @@ class GroupType extends Model
         return $this->config["initial_info"];
     }
     //
-    public function getAvailableUserInfoAttribute(){
-        return $this->config["available_user_info"];
+    public function getViewableUserInfosAttribute(){
+        return $this->config["viewable_user_infos"];
     }
     //
     public function getViewAttribute(){

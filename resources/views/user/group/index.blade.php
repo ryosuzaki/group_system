@@ -39,8 +39,11 @@
                         </thead>
                         <tbody>
                             @foreach($requests as $group)
+                            @php
+                                $type=$group->getType();
+                            @endphp
                             <tr>
-                                <td>{{$group->getType()->formatted_name}}</td>
+                                <td>{{$type->getName()}}</td>
                                 <td><a href="{{route('group.show',$group->id)}}">{{$group->name}}</a></td>
                                 <td>{{$group->getRole($group->pivot->role_id)->role_name}}</td>                                    
                                 <td class="p-1">
@@ -53,7 +56,7 @@
                                         <div class="modal-content">
                                         <div class="modal-body">
                                             参加すると、{{$group->name}}があなたの
-                                            @foreach($group->getType()->user_info as $user_info)
+                                            @foreach($type->user_info as $user_info)
                                             <p class="mb-0">{{$user_info}}</p>
                                             @endforeach
                                             を見られるようになります。<br>
@@ -107,10 +110,11 @@
                         <tbody>
                             @foreach($groups as $group)
                             @php
+                            $type=$group->getType();
                             $role=$group->getRole($group->pivot->role_id);
                             @endphp
                             <tr>
-                                <td>{{$group->getFormattedTypeName()}}</td>
+                                <td>{{$type->getName()}}</td>
                                 <td><a href="{{route('group.show',$group->id)}}">{{$group->name}}</a></td>
                                 <td>{{$role->role_name}}</td>                                     
                                 <td class="p-1">

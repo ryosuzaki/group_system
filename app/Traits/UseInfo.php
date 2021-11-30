@@ -31,7 +31,7 @@ trait UseInfo
     public function createInfo($template){
         $template=InfoTemplate::findByIdOrName($template,$this);
         //
-        if($template->only_one&&$this->hasInfoBase($template)){
+        if($template->only_one&&$this->hasInfo($template)){
             //return new Exception("this info template must be only one in same model");
             return false;
         }else{
@@ -63,7 +63,7 @@ trait UseInfo
     //
     private function calcInfoIndex(){
         $indexes=$this->infos()->pluck('index');
-        $diff=collect(range(0,config("group_system.role.max_num_of_info_bases")-1))->diff($indexes);
+        $diff=collect(range(0,config("group_system.role.max_num_of_infos")-1))->diff($indexes);
         if($diff->isNotEmpty()){
             return $diff->min();
         }

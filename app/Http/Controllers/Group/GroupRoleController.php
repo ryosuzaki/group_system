@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Group\Group;
-use App\Models\Role\Role;
 
 use Illuminate\Support\Facades\Gate;
 

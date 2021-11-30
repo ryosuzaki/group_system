@@ -40,7 +40,7 @@ class UserInfosController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         foreach((array)$request->templates as $template){
-            Auth::user()->createInfo($template);
+            Auth::user()->createInfo((int)$template);
         }
         return redirect()->route('user.show');
     }

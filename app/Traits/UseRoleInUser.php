@@ -18,7 +18,7 @@ trait UseRoleInUser
     //
     public function rolesThroughModel($model_type){
         return $this->belongsToMany(
-            config('group_system.role.class'),'model_role_user','user_id','role_id'
+            config('group_system.role.namespace'),'model_role_user','user_id','role_id'
         )->withPivot('model_id','model_type')->wherePivot("model_type",$model_type);
     }
     

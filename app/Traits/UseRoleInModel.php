@@ -138,7 +138,7 @@ trait UseRoleInModel
     
 
     //ok
-    public function hasUser($user){
+    public function hasUserInRoles($user){
         if(is_int($user)){
             return $this->users()->get()->contains('id',$user);
         }else{
@@ -165,8 +165,14 @@ trait UseRoleInModel
     public function usersRequestJoin(){
         return $this->morphToMany(config('auth.providers.users.model'),'model','join_requests')->withPivot('role_id');
     }
+    //
     public function getUsersRequestJoin(){
         return $this->usersRequestJoin()->get();
+    }
+    //
+    public function getUsersRequestJoinInRole($role){
+        $role=$this->getRole($role);
+        return $this->usersRequestJoin()->wherePivot('role_id',$role->id)->get();
     }
     //ok
     public function getUserRequestJoin($user){
