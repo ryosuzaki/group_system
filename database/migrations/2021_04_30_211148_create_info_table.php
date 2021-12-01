@@ -31,7 +31,7 @@ class CreateInfoTable extends Migration
             $table->timestamps();
             $table->boolean('viewable')->default(true);
             $table->string('name');
-            $table->text('info');
+            $table->json('info');
             //
             $table->foreign('info_template_id')->references('id')->on('info_templates');
         });

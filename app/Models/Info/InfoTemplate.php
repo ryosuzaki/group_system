@@ -117,6 +117,6 @@ class InfoTemplate extends Model
     }
     //
     public function getConstructorAttribute(){
-        return $this->config["constructor"];
+        return isset($this->config["constructor"])?$this->config["constructor"]:null;
     }
 }

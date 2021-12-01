@@ -12,19 +12,11 @@ class Info extends Model
     protected $guarded=['id'];
     //
     protected $casts = [
+        'viewable' => 'boolean',
         'info'  => 'array',
     ];
     //
     protected $dates = ["created_at","updated_at"];
-
-    //
-    public function setInfoAttribute($value){
-        $this->attributes['info'] = serialize($value);
-    }
-    //
-    public function getInfoAttribute($value){
-        return unserialize($value);
-    }
 
 
     //
