@@ -47,6 +47,7 @@ Route::name('user.')->prefix('user')->namespace('User')->middleware('auth')->gro
 //
 Route::name('group.')->prefix('group')->namespace('Group')->middleware('auth')->group(function(){
     //
+    Route::get('home/{type}', 'GroupController@home')->name('home');
     Route::get('{type}', 'GroupController@index')->name('index');
     Route::get('create/{type}', 'GroupController@create')->name('create');
     Route::post('store/{type}', 'GroupController@store')->name('store');

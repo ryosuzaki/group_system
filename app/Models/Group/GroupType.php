@@ -64,11 +64,11 @@ class GroupType extends Model
     }
     //
     public function getAvailableIndexViewAttribute(){
-        return $this->config["available_index_view"];
+        return isset($this->config["available_index_view"])?$this->config["available_index_view"]:true;
     }
     //
     public function getAvailableCreateViewAttribute(){
-        return $this->config["available_create_view"];
+        return isset($this->config["available_create_view"])?$this->config["available_create_view"]:true;
     }
     //
     public function getAdminAttribute(){

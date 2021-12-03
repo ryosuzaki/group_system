@@ -78,6 +78,11 @@ class InfoTemplate extends Model
     }
 
     //
+    public function getName(){
+        return $this->config["default_name"];
+    }
+
+    //
     public function getPackageNameAttribute(){
         $name=explode('/', $this->name);
         return $name[0];

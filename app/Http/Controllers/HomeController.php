@@ -10,6 +10,6 @@ class HomeController extends Controller
 {
     //
     public function index(){
-        return view('home.home')->with(['types'=>GroupType::all()]);
+        return view('home')->with(['types'=>GroupType::all()]);
     }
 }

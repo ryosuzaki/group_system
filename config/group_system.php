@@ -29,9 +29,9 @@ return [
                 //rolesの操作の可否
                 'group_roles'=>true,
             ],
-            //
+            //default true
             "available_index_view"=>true,
-            //
+            //default true
             "available_create_view"=>true,
             //
             "view"=>[
@@ -40,6 +40,13 @@ return [
                     "path"=>"group.sample.create",
                 ],
                 //
+                "show"=>[
+                    "path"=>"group.sample.show",
+                ],
+                //
+                "home"=>[
+                    "path"=>"group.sample.home",
+                ],
             ],
         ]
     ],

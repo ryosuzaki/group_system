@@ -20,10 +20,5 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//ホーム
+//
 Route::get('home', 'HomeController@index')->name('home');
-//
-Route::get('home/group_type/{group_type}', 'HomeController@groupType')->name('home.group_type');
-//
-Route::resource('info_template', 'Info\InfoTemplateController');
-    

@@ -14,21 +14,21 @@ Breadcrumbs::for('home', function ($trail) {
 });
 
 //
-Breadcrumbs::for('home.group_type', function ($trail,GroupType $type) {
+Breadcrumbs::for('group.home', function ($trail,GroupType $type) {
     $trail->parent('home');
-    $trail->push($type->getName(), route('home.group_type',$type));
+    $trail->push($type->getName(), route('group.home',$type));
 });
 
 
 
 //
 Breadcrumbs::for('group.show', function ($trail,Group $group) {
-    $trail->parent('home.group_type',$group->getType());
+    $trail->parent('group.home',$group->getType());
     $trail->push($group->name, route('group.show',$group));
 });
 //
 Breadcrumbs::for('group.create', function ($trail,GroupType $type) {
-    $trail->parent('home.group_type',$type);
+    $trail->parent('group.home',$type);
     $trail->push('作成', route('group.create',$type));
 });
 //
@@ -161,15 +161,4 @@ Breadcrumbs::for('user.group.create', function ($trail) {
 Breadcrumbs::for('user.group.edit', function ($trail,Group $group) {
     $trail->parent('user.group.index');
     $trail->push('変更', route('user.group.edit',$group));
-});
-
-/*
-Breadcrumbs::for('user.announcement.index', function ($trail) {
-    $trail->parent('user.show');
-    $trail->push('お知らせ', route('user.announcement.index'));
-});
-//
-Breadcrumbs::for('user.announcement.show', function ($trail,$announcement) {
-    $trail->parent('user.announcement.index');
-    $trail->push($announcement->data['announcement']['title']);
 });

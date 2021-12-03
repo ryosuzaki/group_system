@@ -16,7 +16,7 @@
                     <div class="form-check mb-4">
                         <label class="form-check-label row text-dark h5">
                             <input class="form-check-input" type="checkbox" name="templates[]" value="{{$template->id}}">
-                            {{$template->name}}
+                            {{$template->getName()}}
                             <span class="form-check-sign position-absolute" style="top:4px; left:0;">
                                 <span class="check"></span>
                             </span>

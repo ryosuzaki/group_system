@@ -18,6 +18,11 @@ use Validator;
 class GroupController extends Controller
 {   
     //
+    public function home(GroupType $type){
+        return view("group.home")->with(['type'=>$type]);
+    }
+
+    //
     public function index(GroupType $type)
     {
         Gate::authorize('viewAny', [Group::class,$type]);
