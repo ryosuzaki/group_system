@@ -19,8 +19,11 @@
                 </thead>
                 <tbody>
                     @foreach($infos as $info)
+                    @php
+                        $template=$info->getTemplate();
+                    @endphp
                     <tr>
-                        <td><a href="{{route('info_template.show',$info->getTemplate()->id)}}">{{$info->getTemplate()->name}}</a></td>                             
+                        <td>{{$template->getName()}}</td>                             
                         <td class="row p-1">
                             <button type="button" data-toggle="modal" data-target="#delete{{$info->id}}" class="btn btn-danger btn-round btn-sm text-white"><i class="material-icons">remove_circle_outline</i> 削除</button>
                             <div class="modal fade" id="delete{{$info->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteLabel" aria-hidden="true">

@@ -21,8 +21,11 @@
                 </thead>
                 <tbody>
                     @foreach($infos as $info)
+                    @php
+                        $template=$info->getTemplate();
+                    @endphp
                     <tr>
-                        <td><a href="{{route('info_template.show',$info->getTemplate()->id)}}">{{$info->name}}</a></td>
+                        <td>{{$info->name}}</td>
                         <td>@if($info->viewable)一般公開@else権限を持つユーザーのみ@endif</td>                              
                         <td>
                         <a class="btn btn-primary btn-sm btn-round m-0 text-white" href="{{route('group.infos.edit',[$group->id,$info->index])}}"><i class="material-icons">edit</i> 変更</a>
