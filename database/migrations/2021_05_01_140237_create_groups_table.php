@@ -13,17 +13,19 @@ class CreateGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('group_type_id')->index();
-            $table->timestamps();
-            $table->string('name')->index();
-        });
-
         Schema::create('group_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->timestamps();
+        });
+        
+        Schema::create('groups', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedInteger('group_type_id')->index();
+            $table->timestamps();
+            $table->string('name')->index();
+
+            $table->foreign('group_type_id')->references('id')->on('group_types');
         });
     }
 
