@@ -82,7 +82,7 @@ class GroupController extends Controller
         }
         return view('group.show')->with([
             'group'=>$group,
-            'type'=>$group->getType(),
+            'type'=>$group->type,
             'infos'=>$infos,
             'index'=>$index,
             ]);
@@ -95,7 +95,7 @@ class GroupController extends Controller
     {
         Gate::authorize('view-group-info',[$group,$index]);
         $info=$group->getInfoByIndex($index);
-        return response()->view($info->getTemplate()->view["show"]["path"], ['info'=>$info,'group'=>$group]);
+        return response()->view($info->template->view["show"]["path"], ['info'=>$info,'group'=>$group]);
     }
 
     

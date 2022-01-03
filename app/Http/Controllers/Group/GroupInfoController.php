@@ -23,7 +23,7 @@ class GroupInfoController extends Controller
         $info=$group->getInfoByIndex($index);
         return view('group.info.edit')->with([
             'group'=>$group,
-            'template'=>$info->getTemplate(),
+            'template'=>$info->template,
             'info'=>$info,
             'index'=>$index,
             ]);

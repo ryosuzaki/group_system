@@ -23,7 +23,7 @@ Breadcrumbs::for('group.home', function ($trail,GroupType $type) {
 
 //
 Breadcrumbs::for('group.show', function ($trail,Group $group) {
-    $trail->parent('group.home',$group->getType());
+    $trail->parent('group.home',$group->type);
     $trail->push($group->name, route('group.show',$group));
 });
 //

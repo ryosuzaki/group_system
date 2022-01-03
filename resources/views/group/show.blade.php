@@ -71,7 +71,7 @@ $(function(){
         <div class="tab-content tab-space pb-0">
             @foreach ($infos as $info)
             @php
-            $template=$info->getTemplate();
+            $template=$info->template;
             @endphp
             <div class="tab-pane @if($info->index==$index) active @endif" id="pill{{$info->index}}">
                 <div id="embed_info{{$info->index}}"></div>

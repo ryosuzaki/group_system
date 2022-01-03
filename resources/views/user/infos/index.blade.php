@@ -20,7 +20,7 @@
                 <tbody>
                     @foreach($infos as $info)
                     @php
-                        $template=$info->getTemplate();
+                        $template=$info->template;
                     @endphp
                     <tr>
                         <td>{{$template->getName()}}</td>                             
