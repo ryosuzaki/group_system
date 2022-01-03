@@ -26,13 +26,14 @@ class Group extends Model
 
     //
     protected $guarded = ['id'];
-    
+    //
+    protected $with = ['type'];
 
     /**
      * 
      */
     public function getPermissionsAttribute(){
-        $permission_config=config("group_system.group_types.".$this->getTypeName().".permission");
+        $permission_config=config("group_system.group_types.".$this->type->name.".permission");
         //
         $permissions=[];
         $permissions[]='group.*';
@@ -48,7 +49,7 @@ class Group extends Model
         }
         //
         $permissions[]='group_info.*';
-        foreach($this->infos()->get() as $info){
+        foreach($this->getInfos() as $info){
             $permissions[]='group_info.'.$info->index.'.*';
             foreach(config('group_system.role.group_info') as $action){
                 $permissions[]='group_info.'.$info->index.'.'.$action;
@@ -110,20 +111,11 @@ class Group extends Model
     }
 
 
-    //
-    //functions of GroupType
-    //
-    //
+    /**
+     * 
+     */
     public function type(){
         return $this->belongsTo('App\Models\Group\GroupType','group_type_id');
-    }
-    //
-    public function getType(){
-        return $this->type()->first();
-    }
-    //
-    public function getTypeName(){
-        return $this->getType()->name;
     }
 
 
@@ -132,7 +124,7 @@ class Group extends Model
      */
     public function getViewableUserInfos($user){
         $infos=[];
-        foreach ($this->getType()->viewable_user_infos as $info){
+        foreach ($this->type->viewable_user_infos as $info){
             $infos[]=$this->getUserInfo($user,$info);
         }
         return $infos;
@@ -145,7 +137,7 @@ class Group extends Model
         $user=$this->getUserWithPivot($user);
         $template=$user->getTemplate($template);
         foreach($this->getViewableUserInfos($user) as $info){
-            if($info->getTemplate()->id==$template->id){
+            if($info->template->id==$template->id){
                 return $info;
             }
         }

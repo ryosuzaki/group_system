@@ -83,7 +83,6 @@ class GroupUserController extends Controller
     public function show(Group $group,int $index,int $user_id)
     {
         Gate::authorize('view-group-users',[$group,$index]);
-        info($user_id);
         return view('group.user.show')->with([
             'group'=>$group,
             'index'=>$index,

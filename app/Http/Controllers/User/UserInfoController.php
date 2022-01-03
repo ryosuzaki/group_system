@@ -22,7 +22,7 @@ class UserInfoController extends Controller
         return view('user.info.edit')->with([
             "user"=>$user,
             'info'=>$info,
-            "template"=>$info->getTemplate(),
+            "template"=>$info->template,
             'index'=>$index,
             ]);
     }

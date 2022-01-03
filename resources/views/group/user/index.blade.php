@@ -49,11 +49,10 @@
                     <div class="tab-pane active" id="role_users" aria-expanded="true">
                         @php
                         $users=$role->users()->get();
+                        $group_type_name=$group->type->name;
                         @endphp
                         
-                        @if(Illuminate\Support\Facades\View::exists('group.user.index.'.$group->getTypeName()))
-                        @include('group.user.index.'.$group->getTypeName(),['users'=>$users])
-                        @else
+                        
                         <div class="table-responsive">
                             <table class="table text-nowrap tablesorter" id="sorter">
                                 <thead>
@@ -96,7 +95,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        @endif
                     </div>
                     
 

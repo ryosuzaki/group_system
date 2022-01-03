@@ -40,7 +40,7 @@
                         <tbody>
                             @foreach($requests as $group)
                             @php
-                                $type=$group->getType();
+                                $type=$group->type;
                             @endphp
                             <tr>
                                 <td>{{$type->getName()}}</td>
@@ -110,7 +110,7 @@
                         <tbody>
                             @foreach($groups as $group)
                             @php
-                            $type=$group->getType();
+                            $type=$group->type;
                             $role=$group->getRole($group->pivot->role_id);
                             @endphp
                             <tr>

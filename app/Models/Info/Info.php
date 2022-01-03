@@ -17,21 +17,18 @@ class Info extends Model
     ];
     //
     protected $dates = ["created_at","updated_at"];
-
+    //
+    protected $with = ['template'];
 
     //
     public function model(){
         return $this->morphTo();
     }
     //
-    public function infoTemplate(){
+    public function template(){
         return $this->belongsTo('App\Models\Info\InfoTemplate','info_template_id');
     }
-    //
-    public function getTemplate(){
-        return $this->infoTemplate()->first();
-    }
-    
+
     //
     public function updateInfo(array $info){
         return $this->fill([
@@ -50,7 +47,7 @@ class Info extends Model
     }
     //
     public function updateInfoEmptyFillDefault(array $new_info){
-        $info=$this->getTemplate()->default_info;
+        $info=$this->template->default_info;
         foreach($info as $key=>$value){
             if(isset($new_info[$key])){
                 $info[$key]=$new_info[$key];
@@ -74,11 +71,11 @@ class Info extends Model
 
     //
     public function getTemplateConfig(){
-        return $this->getTemplate()->config;
+        return $this->template->config;
     }
     //
     public function getEditAttribute(){
-        return $this->getTemplate()->edit;
+        return $this->template->edit;
     }
     
 

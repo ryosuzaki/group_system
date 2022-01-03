@@ -32,10 +32,11 @@ trait UseRoleInModel
      */
     public function refreshRoles(){
         $permissions=$this->permissions;
-        foreach ($this->roles()->get() as $role){
+        $roles=$this->roles()->get();
+        foreach ($roles as $role){
             $role->syncPermissions($role->getAllPermissions()->pluck('name')->intersect($permissions));
         }
-        return $this->roles()->get();
+        return $roles;
     }
 
     //ok
@@ -112,7 +113,7 @@ trait UseRoleInModel
 
     //ok
     public function users(){
-        return $this->morphToMany('App\User','model','model_role_user')->withPivot('role_id');
+        return $this->morphToMany(User::class,'model','model_role_user')->withPivot('role_id');
     }
     
     //ok

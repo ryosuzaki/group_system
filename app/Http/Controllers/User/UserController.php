@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $user=Auth::user();
         $info=$user->getInfoByIndex($index);
-        return response()->view($info->getTemplate()->view["show"]["path"], ['info'=>$info,"user"=>$user]);
+        return response()->view($info->template->view["show"]["path"], ['info'=>$info,"user"=>$user]);
     }
     
     /**

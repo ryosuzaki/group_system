@@ -108,7 +108,7 @@ class User extends Authenticatable
     public function groupTypes(){
         $types=[];
         foreach($this->groups()->get() as $group){
-            $types[]=$group->getType();
+            $types[]=$group->type;
         }
         return collect(array_unique($types));
     }
