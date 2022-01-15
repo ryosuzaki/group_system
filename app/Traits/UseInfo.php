@@ -41,6 +41,7 @@ trait UseInfo
                 'info_template_id'=>$template->id,
                 'name'=>$template->default_name,
                 'viewable'=>$template->default_viewable,
+                'viewable_to_models'=>[],
                 'info'=>$template->default_info,
             ]);
             //

@@ -29,7 +29,8 @@ class CreateInfoTable extends Migration
             $table->morphs('model');
             $table->unique(['index','model_id','model_type']);
             $table->timestamps();
-            $table->boolean('viewable')->default(true);
+            $table->boolean('viewable')->default(false);
+            $table->json('viewable_to_models');
             $table->string('name');
             $table->json('info');
             //

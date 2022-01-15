@@ -4,6 +4,8 @@ namespace App\Models\Info;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Info\InfoTemplate;
+
 use Wildside\Userstamps\Userstamps;
 
 class Info extends Model
@@ -13,6 +15,7 @@ class Info extends Model
     //
     protected $casts = [
         'viewable' => 'boolean',
+        'viewable_to_models'  => 'collection',
         'info'  => 'array',
     ];
     //
@@ -26,7 +29,7 @@ class Info extends Model
     }
     //
     public function template(){
-        return $this->belongsTo('App\Models\Info\InfoTemplate','info_template_id');
+        return $this->belongsTo(InfoTemplate::class,'info_template_id');
     }
 
     //
@@ -70,6 +73,26 @@ class Info extends Model
     }
 
     //
+    public function setViewableToModel(bool $viewable,$model){
+        $this->viewable_to_models=$this->viewable_to_models->put($this->viewableToModelKeyName($model),$viewable);
+        return $this->save();
+    }
+
+    //
+    private function viewableToModelKeyName($model){
+        return  get_class($model)."/".$model->id;
+    }
+
+    //
+    public function isViewableToModel($model){
+        if($this->viewable){
+            return true;
+        }
+        $viewable=$this->viewable_to_models->get($this->viewableToModelKeyName($model));
+        return isset($viewable)?$viewable:false;
+    }
+
+    //
     public function getTemplateConfig(){
         return $this->template->config;
     }
@@ -77,10 +100,4 @@ class Info extends Model
     public function getEditAttribute(){
         return $this->template->edit;
     }
-    
-
-
-
-
-
 }
